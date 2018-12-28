@@ -28,11 +28,13 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    player.cpp
+    player.cpp \
+    enemy.cpp
 
 HEADERS += \
         mainwindow.h \
-    player.h
+    player.h \
+    enemy.h
 
 FORMS += \
         mainwindow.ui

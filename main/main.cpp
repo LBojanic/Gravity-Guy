@@ -3,6 +3,7 @@
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include "player.h"
+#include "enemy.h"
 
 
 /*
@@ -20,16 +21,25 @@ int main(int argc, char *argv[])
     QGraphicsScene * scene = new QGraphicsScene();
 
     //Create rectangle item
-    Player * rect = new Player();
+    Enemy * enemy = new Enemy();
+
+    Player * player = new Player(enemy);
+    scene->addItem(enemy);
 
     //Add item to the scene
-    scene->addItem(rect);
+    scene->addItem(player);
+
 
     //Add a view and setting which scene we want to visualize
     QGraphicsView * view = new QGraphicsView(scene);
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->show();
+    view->setFixedSize(800, 600);
+    scene->setSceneRect(0, 0, 800, 600);
+
+    player->setPos(view->width()/2 - player->rect().width()/2, view->height()/2 - player->rect().height()/2);
+    enemy->setPos(0, view->height()/2 - enemy->rect().height()/2);
 
     return a.exec();
 }
