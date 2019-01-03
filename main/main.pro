@@ -33,14 +33,16 @@ SOURCES += \
     player.cpp \
     enemy.cpp \
     game.cpp \
-    score.cpp
+    score.cpp \
+    globals.cpp
 
 HEADERS += \
         mainwindow.h \
     player.h \
     enemy.h \
     game.h \
-    score.h
+    score.h \
+    globals.h
 
 FORMS += \
         mainwindow.ui

@@ -3,4 +3,25 @@
         <file>gravityGuySoundtrack.mp3</file>
         <file>jump.wav</file>
     </qresource>
+    <qresource prefix="/images">
+        <file>background.png</file>
+    </qresource>
+    <qresource prefix="/images/player/run">
+        <file>71.png</file>
+        <file>70.png</file>
+        <file>61.png</file>
+        <file>60.png</file>
+        <file>51.png</file>
+        <file>50.png</file>
+        <file>41.png</file>
+        <file>40.png</file>
+        <file>31.png</file>
+        <file>30.png</file>
+        <file>21.png</file>
+        <file>20.png</file>
+        <file>11.png</file>
+        <file>10.png</file>
+        <file>01.png</file>
+        <file>00.png</file>
+    </qresource>
 </RCC>

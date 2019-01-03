@@ -4,7 +4,8 @@
 #include <QObject>
 #include "enemy.h"
 #include <QMediaPlayer>
-class Player : public QObject, public QGraphicsRectItem
+#include <QGraphicsPixmapItem>
+class Player : public QObject, public QGraphicsPixmapItem
 {
     Q_OBJECT
 public:
@@ -14,11 +15,14 @@ public:
     virtual ~Player();
 public slots:
     void move();
+    void changeImage();
+    void advance();
 private:
     void keyPressEvent(QKeyEvent * event);
     int m_gravity;
     Enemy * m_enemy;
     QMediaPlayer * jumpSound;
+    int playerCurrentImage;
 };
 
 

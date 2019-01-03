@@ -4,12 +4,19 @@
 #include <QTimer>
 #include <QGraphicsScene>
 #include "enemy.h"
+#include <QDebug>
+#include "game.h"
+#include <QScrollBar>
+#include "globals.h"
+
 Player::Player(Enemy * enemy) : m_enemy(enemy)
 {
-    //representing player as rectangle 100x100
-    setRect(0, 0, 100, 100);
+    //draw graphics
+    playerCurrentImage = 0;
     //setting initial gravity for player
     setGravity(1);
+    setPixmap(QPixmap(":/images/player/run/" + QString::number(playerCurrentImage) + QString::number(gravity()) + ".png").scaled(125, 125));
+
     //make rect focusable so we can use keyboard events
     setFlag(QGraphicsItem::ItemIsFocusable);
     setFocus();
@@ -22,7 +29,16 @@ Player::Player(Enemy * enemy) : m_enemy(enemy)
     //setting timer signals and slots
     connect(timer, SIGNAL(timeout()), this, SLOT(move()));
     //starting the timer
-    timer->start(30);
+    timer->start(5);
+
+    //creating timer object for animation
+    QTimer * timer2 = new QTimer();
+    //setting timer signals and slots
+    connect(timer2, SIGNAL(timeout()), this, SLOT(changeImage()));
+    //starting the timer
+    timer2->start(60);
+
+
 }
 
 //gravity setter
@@ -48,8 +64,8 @@ void Player::move()
     if(gravity() == 1)
     {
         //if our player goes beneath window lower limit then its gameover, otherwise translate
-        if(y() + rect().height() < scene()->height()) {
-            setPos(x(), y() + 10);
+        if(y() + sceneBoundingRect().height() < scene()->height()) {
+            setPos(x(), y() + 1);
         } else {
             // gameover
         }
@@ -58,12 +74,25 @@ void Player::move()
     {
         //if our player goes beyond upper limit then its gameover, otherwise translate
         if(y() > 0) {
-            setPos(x(), y() - 10);
+            setPos(x(), y() - 1);
         } else {
             // gameover
         }
 
     }
+}
+
+void Player::changeImage()
+{
+    playerCurrentImage = (playerCurrentImage + 1) % 8;
+    setPixmap(QPixmap(":/images/player/run/" + QString::number(playerCurrentImage) + QString::number(gravity()) + ".png").scaled(125, 125));
+}
+
+void Player::advance()
+{
+    setPos(x() + 1, y());
+    game->horizontalScrollBar()->setValue(game->horizontalScrollBar()->value() + 1);
+    m_enemy->setPos(m_enemy->x() + 1, m_enemy->y());
 }
 
 //setting callback function for keypressevent
@@ -80,8 +109,6 @@ void Player::keyPressEvent(QKeyEvent *event)
         } else if (jumpSound->state() == QMediaPlayer::StoppedState) { // if a sound is stopped just play
             jumpSound->play();
         }
-
-
         QTimer::singleShot(500, m_enemy, SLOT(spaceEvent()));
     }
 

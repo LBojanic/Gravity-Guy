@@ -5,15 +5,15 @@
 #include "player.h"
 #include "enemy.h"
 #include "game.h"
+#include "globals.h"
 
+#include <QDesktopWidget>
 
-static Game * game;
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
     game = new Game();
-
     return a.exec();
 }

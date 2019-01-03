@@ -2,7 +2,7 @@
 #define ENEMY_H
 #include <QGraphicsRectItem>
 #include <QObject>
-class Enemy : public QObject, public QGraphicsRectItem {
+class Enemy : public QObject, public QGraphicsPixmapItem {
     Q_OBJECT
 public:
     Enemy();
@@ -13,8 +13,10 @@ public:
 public slots:
     void move();
     void spaceEvent();
+    void changeImage();
 private:
     int m_gravity;
+    int enemyCurrentImage;
 };
 
 #endif // ENEMY_H

@@ -22,28 +22,37 @@ QT_BEGIN_NAMESPACE
 class Ui_MainWindow
 {
 public:
+    QWidget *centralWidget;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
-    QWidget *centralWidget;
     QStatusBar *statusBar;
+    QToolBar *toolBar;
+    QToolBar *toolBar_2;
 
     void setupUi(QMainWindow *MainWindow)
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
         MainWindow->resize(400, 300);
-        menuBar = new QMenuBar(MainWindow);
-        menuBar->setObjectName(QString::fromUtf8("menuBar"));
-        MainWindow->setMenuBar(menuBar);
-        mainToolBar = new QToolBar(MainWindow);
-        mainToolBar->setObjectName(QString::fromUtf8("mainToolBar"));
-        MainWindow->addToolBar(mainToolBar);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         MainWindow->setCentralWidget(centralWidget);
+        menuBar = new QMenuBar(MainWindow);
+        menuBar->setObjectName(QString::fromUtf8("menuBar"));
+        menuBar->setGeometry(QRect(0, 0, 400, 22));
+        MainWindow->setMenuBar(menuBar);
+        mainToolBar = new QToolBar(MainWindow);
+        mainToolBar->setObjectName(QString::fromUtf8("mainToolBar"));
+        MainWindow->addToolBar(Qt::TopToolBarArea, mainToolBar);
         statusBar = new QStatusBar(MainWindow);
         statusBar->setObjectName(QString::fromUtf8("statusBar"));
         MainWindow->setStatusBar(statusBar);
+        toolBar = new QToolBar(MainWindow);
+        toolBar->setObjectName(QString::fromUtf8("toolBar"));
+        MainWindow->addToolBar(Qt::TopToolBarArea, toolBar);
+        toolBar_2 = new QToolBar(MainWindow);
+        toolBar_2->setObjectName(QString::fromUtf8("toolBar_2"));
+        MainWindow->addToolBar(Qt::TopToolBarArea, toolBar_2);
 
         retranslateUi(MainWindow);
 
@@ -53,6 +62,8 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", nullptr));
+        toolBar->setWindowTitle(QApplication::translate("MainWindow", "toolBar", nullptr));
+        toolBar_2->setWindowTitle(QApplication::translate("MainWindow", "toolBar_2", nullptr));
     } // retranslateUi
 
 };
