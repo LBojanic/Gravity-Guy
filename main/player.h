@@ -3,6 +3,7 @@
 #include <QGraphicsRectItem>
 #include <QObject>
 #include "enemy.h"
+#include <QMediaPlayer>
 class Player : public QObject, public QGraphicsRectItem
 {
     Q_OBJECT
@@ -17,6 +18,7 @@ private:
     void keyPressEvent(QKeyEvent * event);
     int m_gravity;
     Enemy * m_enemy;
+    QMediaPlayer * jumpSound;
 };
 
 

@@ -4,7 +4,9 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui multimedia
+
+
 QMAKE_CXXFLAGS += -std=c++0x
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -29,12 +31,16 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     player.cpp \
-    enemy.cpp
+    enemy.cpp \
+    game.cpp \
+    score.cpp
 
 HEADERS += \
         mainwindow.h \
     player.h \
-    enemy.h
+    enemy.h \
+    game.h \
+    score.h
 
 FORMS += \
         mainwindow.ui
@@ -43,3 +49,6 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    res.qrc
