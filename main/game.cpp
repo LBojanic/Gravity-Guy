@@ -41,6 +41,7 @@ Game::Game(QWidget *parent){
     score = new Score();
     scene->addItem(score);
 
+    //here we call draw map method where we will draw levels
     std::string name("level1.txt");
     drawMap(name);
 
@@ -49,10 +50,13 @@ Game::Game(QWidget *parent){
     //Setting position of the enemy
     enemy->setPos(0, height()/2 - enemy->sceneBoundingRect().height()/2);
 
+    //timer for score increasing
     QTimer * timer = new QTimer();
     connect(timer,SIGNAL(timeout()),this->score,SLOT(increase()));
     timer->start(50);
 
+    //creating timer for moving our view forward
+    //we are not moving view actually, we move every object and simulate moving view
     QTimer * timer2 = new QTimer();
     connect(timer2,SIGNAL(timeout()),this->player,SLOT(advance()));
     timer2->start(5);
@@ -70,29 +74,39 @@ void Game::drawMap(std::string & mapName)
 {
     int x = 0;
     int y = 0;
+    //initial coordinates for blocks
     std::string line;
+    //opening map file
     QFile file(":/maps/level1.txt");
-
+    //if we can't open our map we return
     if(!file.open(QIODevice::ReadOnly)) {
         QMessageBox::information(0, "error", file.errorString());
+        return ;
     }
-
+    //making a stream from our file
     QTextStream in(&file);
     int i  = 0;
     while(!in.atEnd()) {
+        //we draw map line by line
         QString line = in.readLine();
-        qDebug() << line << QString::number(i++);
+        //iterating through line and creating blocks if needed
         for(QChar c : line)
         {
             if(c == '#')
             {
+                //make new block and add it to blocks list
                 Block * a = new Block(x, y);
                 blocks.append(a);
+                //set block coordinates
                 a->setPos(x, y);
+                //add item to scene
                 scene->addItem(a);
             }
+            //increase x since we are iterating through line
             x += 125;
         }
+
+        //increase y since we change line and set x to the beginning of the line(0)
         x = 0;
         y += 70;
     }
