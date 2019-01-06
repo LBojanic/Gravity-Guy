@@ -3,8 +3,13 @@
 #include <QGraphicsTextItem>
 #include <QFont>
 #include "enemy.h"
+#include "block.h"
 #include <QMediaPlayer>
 #include <QScrollBar>
+#include <QFile>
+#include <QDebug>
+#include <QChar>
+#include <QMessageBox>
 Game::Game(QWidget *parent){
 
     //Creating a scene
@@ -36,6 +41,8 @@ Game::Game(QWidget *parent){
     score = new Score();
     scene->addItem(score);
 
+    std::string name("level1.txt");
+    drawMap(name);
 
     //Setting position of the player
     player->setPos(width()/2 - player->sceneBoundingRect().width()/2, height()/2 - player->sceneBoundingRect().height()/2);
@@ -57,4 +64,37 @@ Game::Game(QWidget *parent){
 
 
     show();
+}
+
+void Game::drawMap(std::string & mapName)
+{
+    int x = 0;
+    int y = 0;
+    std::string line;
+    QFile file(":/maps/level1.txt");
+
+    if(!file.open(QIODevice::ReadOnly)) {
+        QMessageBox::information(0, "error", file.errorString());
+    }
+
+    QTextStream in(&file);
+    int i  = 0;
+    while(!in.atEnd()) {
+        QString line = in.readLine();
+        qDebug() << line << QString::number(i++);
+        for(QChar c : line)
+        {
+            if(c == '#')
+            {
+                Block * a = new Block(x, y);
+                blocks.append(a);
+                a->setPos(x, y);
+                scene->addItem(a);
+            }
+            x += 125;
+        }
+        x = 0;
+        y += 70;
+    }
+
 }

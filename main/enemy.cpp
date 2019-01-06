@@ -2,7 +2,9 @@
 #include <QTimer>
 #include <QGraphicsScene>
 #include <QKeyEvent>
-#include <math.h>
+#include <QtMath>
+#include <QDebug>
+#include "globals.h"
 Enemy::Enemy()
 {
     enemyCurrentImage = 0;
@@ -56,7 +58,7 @@ void Enemy::move()
     if(gravity() == 1)
     {
         //if his lower edge passes after our window's bottom limit then its gameover, otherwise translate a bit more
-        if(y() + sceneBoundingRect().height() < scene()->height()) {
+        if(y() + sceneBoundingRect().height() < scene()->height() && !collidesWithBlocks(game->blocks)) {
             setPos(x(), y() + 1);
         } else {
             // gameover
@@ -65,7 +67,7 @@ void Enemy::move()
     else
     {
         //if his upper edge passes after our window's upper limit then its gameover, otherwise translate a bit more
-        if(y() > 0) {
+        if(y() > 0 && !collidesWithBlocks(game->blocks)) {
             setPos(x(), y() - 1);
         } else {
             // gameover
@@ -77,5 +79,21 @@ void Enemy::move()
 //this is a slot for a signal that player emmits when space key is pressed
 void Enemy::spaceEvent()
 {
-    setGravity(!gravity());
+    if(qSqrt((coordinatesWhereEnemyChanges.first().first - x()) * (coordinatesWhereEnemyChanges.first().first - x())
+             + (coordinatesWhereEnemyChanges.first().second - y()) * (coordinatesWhereEnemyChanges.first().second - y()))
+            < 3) {
+            setGravity(!gravity());
+            coordinatesWhereEnemyChanges.pop_front();
+    } else {
+        QTimer::singleShot(2, this, SLOT(spaceEvent()));
+    }
+}
+
+QGraphicsPixmapItem* Enemy::collidesWithBlocks(QList<QGraphicsPixmapItem *> blocks) {
+
+    for(int i = 0; i < blocks.length(); i++) {
+        if(collidesWithItem(blocks[i]))
+            return blocks[i];
+    }
+    return nullptr;
 }

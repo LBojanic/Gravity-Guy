@@ -7,11 +7,9 @@ Score::Score(QGraphicsItem *parent) : QGraphicsTextItem(parent) {
     //drawing the score text , QString converts number to string
     setPlainText("Score " + QString::number(m_score));
     //Setting default color for our score tet
-    setDefaultTextColor(Qt::blue);
+    setDefaultTextColor(Qt::white);
     //Passing font object QFont(nameOfFont, sizeOfFont);
     setFont(QFont("times", 16));
-
-
 }
 
 void Score::increase() {

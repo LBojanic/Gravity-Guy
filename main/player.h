@@ -13,6 +13,8 @@ public:
     void setGravity(int value);
     int gravity();
     virtual ~Player();
+    QGraphicsPixmapItem* collidesWithBlocks(QList<QGraphicsPixmapItem *> blocks);
+
 public slots:
     void move();
     void changeImage();

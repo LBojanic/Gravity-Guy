@@ -34,7 +34,8 @@ SOURCES += \
     enemy.cpp \
     game.cpp \
     score.cpp \
-    globals.cpp
+    globals.cpp \
+    block.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -42,7 +43,9 @@ HEADERS += \
     enemy.h \
     game.h \
     score.h \
-    globals.h
+    globals.h \
+    block.h \
+    block.h
 
 FORMS += \
         mainwindow.ui

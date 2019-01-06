@@ -8,6 +8,7 @@
 #include "game.h"
 #include <QScrollBar>
 #include "globals.h"
+#include <QtMath>
 
 Player::Player(Enemy * enemy) : m_enemy(enemy)
 {
@@ -64,7 +65,7 @@ void Player::move()
     if(gravity() == 1)
     {
         //if our player goes beneath window lower limit then its gameover, otherwise translate
-        if(y() + sceneBoundingRect().height() < scene()->height()) {
+        if(y() + sceneBoundingRect().height() < scene()->height() && !collidesWithBlocks(game->blocks)) {
             setPos(x(), y() + 1);
         } else {
             // gameover
@@ -73,7 +74,7 @@ void Player::move()
     else
     {
         //if our player goes beyond upper limit then its gameover, otherwise translate
-        if(y() > 0) {
+        if(y() > 0 && !collidesWithBlocks(game->blocks)) {
             setPos(x(), y() - 1);
         } else {
             // gameover
@@ -90,16 +91,19 @@ void Player::changeImage()
 
 void Player::advance()
 {
-    setPos(x() + 1, y());
-    game->horizontalScrollBar()->setValue(game->horizontalScrollBar()->value() + 1);
-    m_enemy->setPos(m_enemy->x() + 1, m_enemy->y());
+    m_enemy->setPos(m_enemy->x() + 2, m_enemy->y());
+    setPos(x() + 2, y());
+    game->horizontalScrollBar()->setValue(game->horizontalScrollBar()->value() + 2);
+    if(game->horizontalScrollBar()->value() != game->horizontalScrollBar()->maximum())
+        game->score->setPos(game->score->x() + 2, game->score->y());
+
 }
 
 //setting callback function for keypressevent
 void Player::keyPressEvent(QKeyEvent *event)
 {
     //if a space key is pressed, change gravity for player and after 500 ms send signal to enemy spaceEvent slot
-    if(event->key() == Qt::Key_Space) {
+    if(event->key() == Qt::Key_Space && collidesWithBlocks(game->blocks)) {
         setGravity(!gravity());
         //The following code plays a sound when a player jumps
         // The if-else is added because if we simply put 'jumpSound->play' it will only play once
@@ -109,9 +113,17 @@ void Player::keyPressEvent(QKeyEvent *event)
         } else if (jumpSound->state() == QMediaPlayer::StoppedState) { // if a sound is stopped just play
             jumpSound->play();
         }
-        QTimer::singleShot(500, m_enemy, SLOT(spaceEvent()));
+        coordinatesWhereEnemyChanges.push_back(QPair<qreal, qreal>(x(), y()));
+        QTimer::singleShot(1, m_enemy, SLOT(spaceEvent()));
     }
+}
 
+QGraphicsPixmapItem* Player::collidesWithBlocks(QList<QGraphicsPixmapItem *> blocks) {
 
+    for(int i = 0; i < blocks.length(); i++) {
+        if(collidesWithItem(blocks[i]))
+            return blocks[i];
+    }
+    return nullptr;
 }
 

@@ -24,4 +24,10 @@
         <file>01.png</file>
         <file>00.png</file>
     </qresource>
+    <qresource prefix="/tiles">
+        <file>tile.png</file>
+    </qresource>
+    <qresource prefix="/maps">
+        <file>level1.txt</file>
+    </qresource>
 </RCC>

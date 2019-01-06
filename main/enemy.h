@@ -9,6 +9,7 @@ public:
     void setGravity(int value);
     int gravity();
     virtual ~Enemy();
+    QGraphicsPixmapItem* collidesWithBlocks(QList<QGraphicsPixmapItem *> blocks);
 
 public slots:
     void move();

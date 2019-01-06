@@ -10,8 +10,10 @@
 class Game: public QGraphicsView{
 public:
     Game(QWidget * parent = 0);
+    void drawMap(std::string & mapName);
     QGraphicsScene * scene;
     Player * player;
     Score * score;
+    QList<QGraphicsPixmapItem *> blocks;
 };
 #endif // GAME_H
