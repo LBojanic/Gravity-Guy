@@ -2,12 +2,13 @@
 #define SCORE_H
 #include <QGraphicsTextItem>
 #include <QObject>
+#include <QPainter>
+#include <QPixmap>
 class Score : public QGraphicsTextItem{
     Q_OBJECT
 public:
     Score(QGraphicsItem * parent = 0);
     int score();
-
 public slots:
     void increase();
 

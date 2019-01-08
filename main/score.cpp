@@ -10,7 +10,10 @@ Score::Score(QGraphicsItem *parent) : QGraphicsTextItem(parent) {
     //Setting default color for our score tet
     setDefaultTextColor(Qt::white);
     //Passing font object QFont(nameOfFont, sizeOfFont);
-    setFont(QFont("times", 16));
+    QFont font = QFont("sans", 28);
+    font.setBold(true);
+    setFont(font);
+
 }
 
 void Score::increase() {

@@ -90,7 +90,7 @@ void Enemy::spaceEvent()
     // then we change enemy gravity, otherwise we recursively call slot
     if(qSqrt((coordinatesWhereEnemyChanges.first().first - x()) * (coordinatesWhereEnemyChanges.first().first - x())
              + (coordinatesWhereEnemyChanges.first().second - y()) * (coordinatesWhereEnemyChanges.first().second - y()))
-            < 1) {
+            < 2) {
             setGravity(!gravity());
             coordinatesWhereEnemyChanges.pop_front();
     } else {

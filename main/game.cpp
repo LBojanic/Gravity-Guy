@@ -55,7 +55,7 @@ Game::Game(QWidget *parent){
     player->setPos(width()/2 - player->boundingRect().width()/2, height()/2 - player->sceneBoundingRect().height()/2);
     //Setting position of the enemy
     enemy->setPos(100, height()/2 - enemy->boundingRect().height()/2);
-
+    score->setPos(10, 10);
     //timer for score increasing
     QTimer * timer = new QTimer();
     connect(timer,SIGNAL(timeout()),this->score,SLOT(increase()));

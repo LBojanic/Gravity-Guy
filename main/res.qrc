@@ -46,4 +46,7 @@
     <qresource prefix="/maps">
         <file>level1.txt</file>
     </qresource>
+    <qresource prefix="/scoreBar">
+        <file>scoreBar.png</file>
+    </qresource>
 </RCC>

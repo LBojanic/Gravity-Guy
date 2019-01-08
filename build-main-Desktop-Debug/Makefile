@@ -774,6 +774,7 @@ qrc_res.cpp: ../main/res.qrc \
 		../main/jump.wav \
 		../main/gravityGuySoundtrack.mp3 \
 		../main/level1.txt \
+		../main/scoreBar.png \
 		../main/tile.png
 	/home/lazar/Qt/5.12.0/gcc_64/bin/rcc -name res ../main/res.qrc -o qrc_res.cpp
 
@@ -1248,6 +1249,8 @@ moc_game.cpp: ../../../Qt/5.12.0/gcc_64/include/QtWidgets/QGraphicsView \
 		../../../Qt/5.12.0/gcc_64/include/QtWidgets/QGraphicsPixmapItem \
 		../main/score.h \
 		../../../Qt/5.12.0/gcc_64/include/QtWidgets/QGraphicsTextItem \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/QPainter \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/QPixmap \
 		../../../Qt/5.12.0/gcc_64/include/QtCore/QVector \
 		../main/game.h \
 		moc_predefs.h \
@@ -1343,6 +1346,15 @@ moc_score.cpp: ../../../Qt/5.12.0/gcc_64/include/QtWidgets/QGraphicsTextItem \
 		../../../Qt/5.12.0/gcc_64/include/QtGui/qpixelformat.h \
 		../../../Qt/5.12.0/gcc_64/include/QtGui/qtransform.h \
 		../../../Qt/5.12.0/gcc_64/include/QtCore/QObject \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/QPainter \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/qpainter.h \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/qtextoption.h \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/qpen.h \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/qbrush.h \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/qfontinfo.h \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/qfont.h \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/qfontmetrics.h \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/QPixmap \
 		../main/score.h \
 		moc_predefs.h \
 		../../../Qt/5.12.0/gcc_64/bin/moc
@@ -1522,6 +1534,8 @@ main.o: ../main/main.cpp ../main/mainwindow.h \
 		../../../Qt/5.12.0/gcc_64/include/QtWidgets/QWidget \
 		../main/score.h \
 		../../../Qt/5.12.0/gcc_64/include/QtWidgets/QGraphicsTextItem \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/QPainter \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/QPixmap \
 		../../../Qt/5.12.0/gcc_64/include/QtCore/QVector \
 		../main/globals.h \
 		../../../Qt/5.12.0/gcc_64/include/QtCore/QMutex \
@@ -1784,6 +1798,8 @@ player.o: ../main/player.cpp ../main/player.h \
 		../../../Qt/5.12.0/gcc_64/include/QtWidgets/QWidget \
 		../main/score.h \
 		../../../Qt/5.12.0/gcc_64/include/QtWidgets/QGraphicsTextItem \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/QPainter \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/QPixmap \
 		../../../Qt/5.12.0/gcc_64/include/QtCore/QVector \
 		../../../Qt/5.12.0/gcc_64/include/QtWidgets/QScrollBar \
 		../../../Qt/5.12.0/gcc_64/include/QtWidgets/qscrollbar.h \
@@ -1944,6 +1960,8 @@ enemy.o: ../main/enemy.cpp ../main/enemy.h \
 		../../../Qt/5.12.0/gcc_64/include/QtWidgets/QGraphicsPixmapItem \
 		../main/score.h \
 		../../../Qt/5.12.0/gcc_64/include/QtWidgets/QGraphicsTextItem \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/QPainter \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/QPixmap \
 		../../../Qt/5.12.0/gcc_64/include/QtCore/QVector \
 		../../../Qt/5.12.0/gcc_64/include/QtCore/QMutex
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o enemy.o ../main/enemy.cpp
@@ -2089,6 +2107,8 @@ game.o: ../main/game.cpp ../main/game.h \
 		../../../Qt/5.12.0/gcc_64/include/QtWidgets/QGraphicsPixmapItem \
 		../main/score.h \
 		../../../Qt/5.12.0/gcc_64/include/QtWidgets/QGraphicsTextItem \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/QPainter \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/QPixmap \
 		../../../Qt/5.12.0/gcc_64/include/QtCore/QVector \
 		../../../Qt/5.12.0/gcc_64/include/QtCore/QTimer \
 		../../../Qt/5.12.0/gcc_64/include/QtCore/qtimer.h \
@@ -2198,8 +2218,63 @@ score.o: ../main/score.cpp ../main/score.h \
 		../../../Qt/5.12.0/gcc_64/include/QtGui/qpixelformat.h \
 		../../../Qt/5.12.0/gcc_64/include/QtGui/qtransform.h \
 		../../../Qt/5.12.0/gcc_64/include/QtCore/QObject \
-		../../../Qt/5.12.0/gcc_64/include/QtGui/QFont \
-		../../../Qt/5.12.0/gcc_64/include/QtGui/qfont.h
+		../../../Qt/5.12.0/gcc_64/include/QtGui/QPainter \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/qpainter.h \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/qtextoption.h \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/qpen.h \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/qbrush.h \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/qfontinfo.h \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/qfont.h \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/qfontmetrics.h \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/QPixmap \
+		../main/globals.h \
+		../main/game.h \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/QGraphicsView \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/qgraphicsview.h \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/qscrollarea.h \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/qabstractscrollarea.h \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/qframe.h \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/qwidget.h \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/qpalette.h \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/qsizepolicy.h \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/qcursor.h \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/qkeysequence.h \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/qevent.h \
+		../../../Qt/5.12.0/gcc_64/include/QtCore/qurl.h \
+		../../../Qt/5.12.0/gcc_64/include/QtCore/qurlquery.h \
+		../../../Qt/5.12.0/gcc_64/include/QtCore/qfile.h \
+		../../../Qt/5.12.0/gcc_64/include/QtCore/qfiledevice.h \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/qvector2d.h \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/qtouchdevice.h \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/qgraphicsscene.h \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/QWidget \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/QGraphicsScene \
+		../main/player.h \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/QGraphicsRectItem \
+		../main/enemy.h \
+		../../../Qt/5.12.0/gcc_64/include/QtMultimedia/QMediaPlayer \
+		../../../Qt/5.12.0/gcc_64/include/QtMultimedia/qmediaplayer.h \
+		../../../Qt/5.12.0/gcc_64/include/QtMultimedia/qmediaobject.h \
+		../../../Qt/5.12.0/gcc_64/include/QtMultimedia/qtmultimediaglobal.h \
+		../../../Qt/5.12.0/gcc_64/include/QtMultimedia/qtmultimedia-config.h \
+		../../../Qt/5.12.0/gcc_64/include/QtMultimedia/qmultimedia.h \
+		../../../Qt/5.12.0/gcc_64/include/QtMultimedia/qmediacontent.h \
+		../../../Qt/5.12.0/gcc_64/include/QtMultimedia/qmediaresource.h \
+		../../../Qt/5.12.0/gcc_64/include/QtNetwork/qnetworkrequest.h \
+		../../../Qt/5.12.0/gcc_64/include/QtNetwork/qtnetworkglobal.h \
+		../../../Qt/5.12.0/gcc_64/include/QtNetwork/qtnetwork-config.h \
+		../../../Qt/5.12.0/gcc_64/include/QtCore/QSharedDataPointer \
+		../../../Qt/5.12.0/gcc_64/include/QtCore/QString \
+		../../../Qt/5.12.0/gcc_64/include/QtCore/QUrl \
+		../../../Qt/5.12.0/gcc_64/include/QtCore/QVariant \
+		../../../Qt/5.12.0/gcc_64/include/QtMultimedia/qmediaenumdebug.h \
+		../../../Qt/5.12.0/gcc_64/include/QtCore/qmetaobject.h \
+		../../../Qt/5.12.0/gcc_64/include/QtMultimedia/qaudio.h \
+		../../../Qt/5.12.0/gcc_64/include/QtNetwork/qnetworkconfiguration.h \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/QGraphicsPixmapItem \
+		../../../Qt/5.12.0/gcc_64/include/QtCore/QVector \
+		../../../Qt/5.12.0/gcc_64/include/QtCore/QMutex \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/QFont
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o score.o ../main/score.cpp
 
 globals.o: ../main/globals.cpp ../main/globals.h \
@@ -2344,6 +2419,8 @@ globals.o: ../main/globals.cpp ../main/globals.h \
 		../../../Qt/5.12.0/gcc_64/include/QtWidgets/QGraphicsPixmapItem \
 		../main/score.h \
 		../../../Qt/5.12.0/gcc_64/include/QtWidgets/QGraphicsTextItem \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/QPainter \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/QPixmap \
 		../../../Qt/5.12.0/gcc_64/include/QtCore/QVector \
 		../../../Qt/5.12.0/gcc_64/include/QtCore/QMutex
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o globals.o ../main/globals.cpp
@@ -2491,6 +2568,8 @@ block.o: ../main/block.cpp ../main/block.h \
 		../../../Qt/5.12.0/gcc_64/include/QtNetwork/qnetworkconfiguration.h \
 		../main/score.h \
 		../../../Qt/5.12.0/gcc_64/include/QtWidgets/QGraphicsTextItem \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/QPainter \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/QPixmap \
 		../../../Qt/5.12.0/gcc_64/include/QtCore/QVector \
 		../../../Qt/5.12.0/gcc_64/include/QtCore/QMutex
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o block.o ../main/block.cpp
