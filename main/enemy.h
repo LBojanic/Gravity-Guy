@@ -10,11 +10,13 @@ public:
     int gravity();
     virtual ~Enemy();
     QGraphicsPixmapItem* collidesWithBlocks(QList<QGraphicsPixmapItem *> blocks);
+    QGraphicsPixmapItem* crashesIntoBlock(QList<QGraphicsPixmapItem *> blocks);
 
 public slots:
     void move();
     void spaceEvent();
     void changeImage();
+    void goToPosition();
 private:
     int m_gravity;
     int enemyCurrentImage;

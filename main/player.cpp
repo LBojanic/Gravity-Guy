@@ -9,6 +9,7 @@
 #include <QScrollBar>
 #include "globals.h"
 #include <QtMath>
+#include "block.h"
 
 Player::Player(Enemy * enemy) : m_enemy(enemy)
 {
@@ -91,13 +92,34 @@ void Player::changeImage()
 
 void Player::advance()
 {
-    m_enemy->setPos(m_enemy->x() + 2, m_enemy->y());
-    setPos(x() + 2, y());
+
+    if(!crashesIntoBlock(game->blocks) &&
+            qFabs((game->horizontalScrollBar()->value()*1.0 + game->width()/2.0) - (x() + boundingRect().width()/2)) > 1)
+    {
+        QTimer::singleShot(5, this, SLOT(goToMiddle()));
+    }
+
+    if(!m_enemy->crashesIntoBlock(game->blocks) &&
+            qFabs((game->horizontalScrollBar()->value() + 100) - m_enemy->x()) > 1)
+    {
+        QTimer::singleShot(5, m_enemy, SLOT(goToPosition()));
+    }
+
+    if(!m_enemy->crashesIntoBlock(game->blocks))
+         m_enemy->setPos(m_enemy->x() + 2, m_enemy->y());
+    if(!crashesIntoBlock(game->blocks)) //move only if player doesn't collide with block on it's path
+        setPos(x() + 2, y());
     game->horizontalScrollBar()->setValue(game->horizontalScrollBar()->value() + 2);
     if(game->horizontalScrollBar()->value() != game->horizontalScrollBar()->maximum())
         game->score->setPos(game->score->x() + 2, game->score->y());
 
 }
+
+void Player::goToMiddle()
+{
+    setPos(x() + 1, y());
+}
+
 
 //setting callback function for keypressevent
 void Player::keyPressEvent(QKeyEvent *event)
@@ -119,11 +141,51 @@ void Player::keyPressEvent(QKeyEvent *event)
 }
 
 QGraphicsPixmapItem* Player::collidesWithBlocks(QList<QGraphicsPixmapItem *> blocks) {
-
+    mutex->lock();
+    qreal playerTop = pos().y(); //player top coordinate
+    qreal playerBottom = pos().y() + boundingRect().height(); //player bottom coordinate
+    qreal playerLeft = pos().x(); // player left coordinate
+    qreal playerRight = pos().x() + boundingRect().width(); // player right coordinate
     for(int i = 0; i < blocks.length(); i++) {
-        if(collidesWithItem(blocks[i]))
+        qreal blockTop = blocks[i]->pos().y(); //block top coordinate
+        qreal blockBottom = blocks[i]->pos().y() + blocks[i]->boundingRect().height();//block bottom coordinate
+        qreal blockLeft = blocks[i]->pos().x();// block left coordinate
+        qreal blockRight = blocks[i]->pos().x() + blocks[i]->boundingRect().width();// block right coordinate
+
+        //if gravity is 1 then player is moving downward so we need to check if he touches block top with his bottom meaning
+        //the difference between player bottom and block top should be max 1 pixel since player moves 1 pixel down with gravity
+        // after that we must check if players left edge or right edge is between block's x left and rigth edges
+        // we have 2 cases, players right edge is between block's left and right and case where player's left edge is between
+        if(gravity() == 1 && qFabs(playerBottom - blockTop) < 1 && ((playerLeft <= blockRight && playerLeft >= blockLeft) || (playerRight >= blockLeft && playerRight <= blockRight))) {
+            mutex->unlock();
             return blocks[i];
+        }
+        if(gravity() == 0 && qFabs(playerTop - blockBottom) < 1 && ((playerRight >= blockLeft && playerRight <= blockRight) || (playerLeft >= blockLeft && playerLeft <= blockRight))) {
+            mutex->unlock();
+            return blocks[i];
+        }
     }
+    mutex->unlock();
+    return nullptr;
+}
+
+QGraphicsPixmapItem *Player::crashesIntoBlock(QList<QGraphicsPixmapItem *> blocks)
+{
+    mutex->lock();
+    qreal playerTop = pos().y(); //player top coordinate
+    qreal playerBottom = pos().y() + boundingRect().height(); //player bottom coordinate
+    qreal playerRight = pos().x() + boundingRect().width(); // player right coordinate
+    for(int i = 0; i < blocks.length(); i++) {
+        qreal blockTop = blocks[i]->pos().y(); //block top coordinate
+        qreal blockBottom = blocks[i]->pos().y() + blocks[i]->boundingRect().height();//block bottom coordinate
+        qreal blockLeft = blocks[i]->pos().x();// block left coordinate
+
+        if(qFabs(playerRight - blockLeft) <= 2 && ((playerTop <= blockBottom && playerTop >= blockTop) || (playerBottom >= blockTop && playerBottom <= blockBottom))) {
+            mutex->unlock();
+            return blocks[i];
+        }
+    }
+    mutex->unlock();
     return nullptr;
 }
 

@@ -10,12 +10,15 @@
 #include <QDebug>
 #include <QChar>
 #include <QMessageBox>
+#include <QVector>
+#include <limits>
+#include "globals.h"
 Game::Game(QWidget *parent){
 
     //Creating a scene
     scene = new QGraphicsScene();
     //Setting scene size
-    scene->setSceneRect(0, 0, 5000, 700);
+    scene->setSceneRect(0, 0, std::numeric_limits<double>::max(), 700);
 
     setBackgroundBrush(QBrush(QImage(":/images/background.png").scaled(1280, 700)));
     setScene(scene);
@@ -43,12 +46,15 @@ Game::Game(QWidget *parent){
 
     //here we call draw map method where we will draw levels
     std::string name("level1.txt");
-    drawMap(name);
+    currentFrame = 12;
+    readMap(name);
+
+
 
     //Setting position of the player
-    player->setPos(width()/2 - player->sceneBoundingRect().width()/2, height()/2 - player->sceneBoundingRect().height()/2);
+    player->setPos(width()/2 - player->boundingRect().width()/2, height()/2 - player->sceneBoundingRect().height()/2);
     //Setting position of the enemy
-    enemy->setPos(0, height()/2 - enemy->sceneBoundingRect().height()/2);
+    enemy->setPos(100, height()/2 - enemy->boundingRect().height()/2);
 
     //timer for score increasing
     QTimer * timer = new QTimer();
@@ -70,12 +76,11 @@ Game::Game(QWidget *parent){
     show();
 }
 
-void Game::drawMap(std::string & mapName)
+void Game::readMap(std::string & mapName)
 {
     int x = 0;
     int y = 0;
     //initial coordinates for blocks
-    std::string line;
     //opening map file
     QFile file(":/maps/level1.txt");
     //if we can't open our map we return
@@ -85,13 +90,20 @@ void Game::drawMap(std::string & mapName)
     }
     //making a stream from our file
     QTextStream in(&file);
-    int i  = 0;
     while(!in.atEnd()) {
         //we draw map line by line
         QString line = in.readLine();
         //iterating through line and creating blocks if needed
-        for(QChar c : line)
+        mapVector.push_back(line);
+
+    }
+
+    for(int j = 0; j < currentFrame; j++)
+    {
+        for(int i = 0; i < mapVector.length(); i++)
         {
+            QChar c = mapVector[i][j];
+
             if(c == '#')
             {
                 //make new block and add it to blocks list
@@ -102,13 +114,45 @@ void Game::drawMap(std::string & mapName)
                 //add item to scene
                 scene->addItem(a);
             }
-            //increase x since we are iterating through line
-            x += 125;
+            y += 70;
         }
+        x += 125;
+        y = 0;
+    }
 
-        //increase y since we change line and set x to the beginning of the line(0)
-        x = 0;
+
+    timerForMap = new QTimer();
+    connect(timerForMap, SIGNAL(timeout()), this, SLOT(drawFrame()));
+    timerForMap->start(400);
+}
+void Game::drawFrame()
+{
+    mutex->lock();
+    if(!blocks.isEmpty()) {
+        auto blockToBeRemoved = blocks.first();
+        blocks.removeFirst();
+        scene->removeItem(blockToBeRemoved);
+        delete blockToBeRemoved;
+    }
+    mutex->unlock();
+    currentFrame++;
+    int x = currentFrame * 125;
+    int y = 0;
+    for(auto row : mapVector) {
+        if(row[currentFrame % mapVector[0].length()] == '#')
+        {
+            Block * a = new Block(x, y);
+            mutex->lock();
+            blocks.append(a);
+            mutex->unlock();
+            //set block coordinates
+            a->setPos(x, y);
+            //add item to scene
+            scene->addItem(a);
+        }
         y += 70;
     }
 
 }
+
+

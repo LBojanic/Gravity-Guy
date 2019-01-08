@@ -14,11 +14,13 @@ public:
     int gravity();
     virtual ~Player();
     QGraphicsPixmapItem* collidesWithBlocks(QList<QGraphicsPixmapItem *> blocks);
+    QGraphicsPixmapItem* crashesIntoBlock(QList<QGraphicsPixmapItem *> blocks);
 
 public slots:
     void move();
     void changeImage();
     void advance();
+    void goToMiddle();
 private:
     void keyPressEvent(QKeyEvent * event);
     int m_gravity;

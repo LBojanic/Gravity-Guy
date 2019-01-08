@@ -1,4 +1,5 @@
 #include "score.h"
+#include "globals.h"
 #include <QFont>
 
 Score::Score(QGraphicsItem *parent) : QGraphicsTextItem(parent) {
@@ -13,7 +14,8 @@ Score::Score(QGraphicsItem *parent) : QGraphicsTextItem(parent) {
 }
 
 void Score::increase() {
-    m_score ++ ;
+    if(!game->player->crashesIntoBlock(game->blocks))
+        m_score ++ ;
     //Redrawing the score text , QString converts number to string
     setPlainText("Score " + QString::number(m_score));
 }
