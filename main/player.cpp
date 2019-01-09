@@ -188,4 +188,3 @@ QGraphicsPixmapItem *Player::crashesIntoBlock(QList<QGraphicsPixmapItem *> block
     mutex->unlock();
     return nullptr;
 }
-

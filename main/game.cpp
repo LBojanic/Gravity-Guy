@@ -13,7 +13,12 @@
 #include <QVector>
 #include <limits>
 #include "globals.h"
+#include <button.h>
+#include "player.h"
+
 Game::Game(QWidget *parent){
+    //in the Game constructor we set the scene, but to set the player, enemy, etc on the scene
+    //we use start(), because we want those items to appear only after the user presses the 'play' button
 
     //Creating a scene
     scene = new QGraphicsScene();
@@ -29,51 +34,6 @@ Game::Game(QWidget *parent){
     //Setting window size to be fixed
     setFixedSize(1280, 700);
     horizontalScrollBar()->setValue(1);
-    //Create rectangle item
-    Enemy * enemy = new Enemy();
-
-    //Creating player object
-    player = new Player(enemy);
-    //Adding Enemy object to the scene
-    scene->addItem(enemy);
-
-    //Add Player object to the scene
-    scene->addItem(player);
-
-    //Create a score
-    score = new Score();
-    scene->addItem(score);
-
-    //here we call draw map method where we will draw levels
-    std::string name("level1.txt");
-    currentFrame = 12;
-    readMap(name);
-
-
-
-    //Setting position of the player
-    player->setPos(width()/2 - player->boundingRect().width()/2, height()/2 - player->sceneBoundingRect().height()/2);
-    //Setting position of the enemy
-    enemy->setPos(100, height()/2 - enemy->boundingRect().height()/2);
-    score->setPos(10, 10);
-    //timer for score increasing
-    QTimer * timer = new QTimer();
-    connect(timer,SIGNAL(timeout()),this->score,SLOT(increase()));
-    timer->start(50);
-
-    //creating timer for moving our view forward
-    //we are not moving view actually, we move every object and simulate moving view
-    QTimer * timer2 = new QTimer();
-    connect(timer2,SIGNAL(timeout()),this->player,SLOT(advance()));
-    timer2->start(5);
-
-    //Playing background music
-    QMediaPlayer * music = new QMediaPlayer();
-    music->setMedia(QUrl("qrc:/sounds/gravityGuySoundtrack.mp3"));
-    music->play();
-
-
-    show();
 }
 
 void Game::readMap(std::string & mapName)
@@ -125,6 +85,36 @@ void Game::readMap(std::string & mapName)
     connect(timerForMap, SIGNAL(timeout()), this, SLOT(drawFrame()));
     timerForMap->start(400);
 }
+
+void Game::displayMainMenu(){
+    //title
+    QGraphicsTextItem* title = new QGraphicsTextItem(QString("Gravity guy"));
+    //setting title font and size
+    QFont titleFont("Helvetica", 50); //TODO: maybe change the font and font size
+    title->setFont(titleFont);
+    //position for the title
+    int titleXPos = this->width()/2 - title->boundingRect().width()/2;
+    int titleYPos = 150; //TODO: maybe change the position of the title
+    title->setPos(titleXPos, titleYPos);
+    scene->addItem(title);
+
+    //creating the 'play' button
+    Button* playButton = new Button(QString("Play"));
+    int playButtonXPos = this->width()/2 - playButton->boundingRect().width()/2;
+    int playButtonYPos = 350; //TODO: maybe change the play button position
+    playButton->setPos(playButtonXPos, playButtonYPos);
+    connect(playButton,SIGNAL(clicked()),this,SLOT(start()));
+    scene->addItem(playButton);
+
+    //creating the 'quit' button
+    Button* quitButton = new Button(QString("Quit"));
+    int quitButtonXPos = this->width()/2 - quitButton->boundingRect().width()/2;
+    int quitButtonYPos = 450; //TODO: maybe change the quit button position
+    quitButton->setPos(quitButtonXPos, quitButtonYPos);
+    connect(quitButton,SIGNAL(clicked()),this,SLOT(close()));
+    scene->addItem(quitButton);
+}
+
 void Game::drawFrame()
 {
     mutex->lock();
@@ -155,4 +145,52 @@ void Game::drawFrame()
 
 }
 
+void Game::start(){
+    //start() is called after the user presses the 'play' button in the main menu, which starts the game
 
+    //clear the screen
+    scene->clear();
+
+    //Create rectangle item
+    Enemy * enemy = new Enemy();
+
+    //Creating player object
+    player = new Player(enemy);
+    //Adding Enemy object to the scene
+    scene->addItem(enemy);
+
+    //Add Player object to the scene
+    scene->addItem(player);
+
+    //Create a score
+    score = new Score();
+    scene->addItem(score);
+
+    //here we call draw map method where we will draw levels
+    std::string name("level1.txt");
+    currentFrame = 12;
+    readMap(name);
+
+
+
+    //Setting position of the player
+    player->setPos(width()/2 - player->boundingRect().width()/2, height()/2 - player->sceneBoundingRect().height()/2);
+    //Setting position of the enemy
+    enemy->setPos(100, height()/2 - enemy->boundingRect().height()/2);
+    score->setPos(10, 10);
+    //timer for score increasing
+    QTimer * timer = new QTimer();
+    connect(timer,SIGNAL(timeout()),this->score,SLOT(increase()));
+    timer->start(50);
+
+    //creating timer for moving our view forward
+    //we are not moving view actually, we move every object and simulate moving view
+    QTimer * timer2 = new QTimer();
+    connect(timer2,SIGNAL(timeout()),this->player,SLOT(advance()));
+    timer2->start(5);
+
+    //Playing background music
+    QMediaPlayer * music = new QMediaPlayer();
+    music->setMedia(QUrl("qrc:/sounds/gravityGuySoundtrack.mp3"));
+    music->play();
+}

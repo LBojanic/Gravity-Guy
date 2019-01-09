@@ -30,12 +30,13 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    player.cpp \
     enemy.cpp \
     game.cpp \
     score.cpp \
     globals.cpp \
-    block.cpp
+    block.cpp \
+    button.cpp \
+    player.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -45,7 +46,8 @@ HEADERS += \
     score.h \
     globals.h \
     block.h \
-    block.h
+    block.h \
+    button.h
 
 FORMS += \
         mainwindow.ui

@@ -20,8 +20,14 @@ public:
     QList<QGraphicsPixmapItem *> blocks;
     int currentFrame;
     QVector<QString> mapVector;
+
+    void displayMainMenu();
+
 public slots:
     void drawFrame();
+    //start() needs to be a public slot because when the 'play' button is clicked
+    //start is used to handle the clicked() signal
+    void start();
 private:
     QTimer * timerForMap;
 };
