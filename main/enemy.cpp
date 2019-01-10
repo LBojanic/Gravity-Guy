@@ -13,19 +13,19 @@ Enemy::Enemy()
     setPixmap(QPixmap(":/images/player/run/enemy" + QString::number(enemyCurrentImage) + QString::number(gravity()) + ".png").scaled(125, 125));
 
     //creating timer for movement
-    QTimer * timer = new QTimer(this);
+    timerEnemyMove = new QTimer(this);
     //setting its slots and signals
-    connect(timer, SIGNAL(timeout()), this, SLOT(move()));
+    connect(timerEnemyMove, SIGNAL(timeout()), this, SLOT(move()));
     //calling timer
-    timer->start(5);
+    timerEnemyMove->start(5);
 
 
     //creating timer object for animation
-    QTimer * timer2 = new QTimer();
+    timerChangeImageEnemy = new QTimer();
     //setting timer signals and slots
-    connect(timer2, SIGNAL(timeout()), this, SLOT(changeImage()));
+    connect(timerChangeImageEnemy, SIGNAL(timeout()), this, SLOT(changeImage()));
     //starting the timer
-    timer2->start(60);
+    timerChangeImageEnemy->start(60);
 
 
 }
@@ -61,23 +61,33 @@ void Enemy::goToPosition()
 //Movement function
 void Enemy::move()
 {
-    //if gravity == 1 then he must be moving in downward position
     if(gravity() == 1)
     {
-        //if his lower edge passes after our window's bottom limit then its gameover, otherwise translate a bit more
-        if(y() + sceneBoundingRect().height() < scene()->height() && !collidesWithBlocks(game->blocks)) {
+
+        if (game->player->y() >= game->height()) {
+            //this is an animation when player goes beyond window's limits
+            setPos(x(), y() + 2);
+        } else if(y() + sceneBoundingRect().height() < scene()->height() && !collidesWithBlocks(game->blocks)) {
+            //this is regular movement
             setPos(x(), y() + 1);
-        } else {
-            // gameover
+        }
+        if(y() + sceneBoundingRect().height() >= scene()->height() + this->boundingRect().height() && !collidesWithBlocks(game->blocks)) {
+            //if our enemy goes beneath window's lower limit then its gameover, otherwise translate
+            game->gameOver();
         }
     }
     else
     {
-        //if his upper edge passes after our window's upper limit then its gameover, otherwise translate a bit more
-        if(y() > 0 && !collidesWithBlocks(game->blocks)) {
+        if(game->player->y() <= 0) {
+            //this is an animation when player goes above window's limits
+            setPos(x(), y() - 2);
+        } else if(y() > 0 && !collidesWithBlocks(game->blocks)) {
+            //this is regular movement
             setPos(x(), y() - 1);
-        } else {
-            // gameover
+        }
+        if(y() <= -this->boundingRect().height() && !collidesWithBlocks(game->blocks)) {
+            //if our enemy goes above window's upper limit then its gameover, otherwise translate
+            game->gameOver();
         }
 
     }

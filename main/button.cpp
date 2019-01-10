@@ -1,6 +1,7 @@
 #include "button.h"
 #include <QBrush>
 #include <QGraphicsTextItem>
+#include "globals.h"
 
 Button::Button(QString name, QGraphicsItem *parent):QGraphicsRectItem (parent){
     //drawing the rectangle for the button
@@ -26,6 +27,8 @@ void Button::mousePressEvent(QGraphicsSceneMouseEvent *event){
     //when the mouse is pressed on a button we need to activate a signal
     emit clicked();
 }
+
+
 
 void Button::hoverEnterEvent(QGraphicsSceneHoverEvent *event){
     //when the mouse hovers on the button area, we want to change the buttons color

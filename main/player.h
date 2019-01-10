@@ -15,6 +15,10 @@ public:
     virtual ~Player();
     QGraphicsPixmapItem* collidesWithBlocks(QList<QGraphicsPixmapItem *> blocks);
     QGraphicsPixmapItem* crashesIntoBlock(QList<QGraphicsPixmapItem *> blocks);
+    Enemy* enemy();
+    QTimer * timerMove;
+    QTimer * timerChangeImagePlayer;
+    Enemy * m_enemy;
 
 public slots:
     void move();
@@ -24,9 +28,9 @@ public slots:
 private:
     void keyPressEvent(QKeyEvent * event);
     int m_gravity;
-    Enemy * m_enemy;
     QMediaPlayer * jumpSound;
     int playerCurrentImage;
+
 };
 
 

@@ -780,6 +780,7 @@ qrc_res.cpp: ../main/res.qrc \
 		../main/60.png \
 		../main/enemy71.png \
 		../main/61.png \
+		../main/GameOver.wav \
 		../main/jump.wav \
 		../main/gravityGuySoundtrack.mp3 \
 		../main/level1.txt \
@@ -1753,7 +1754,25 @@ mainwindow.o: ../main/mainwindow.cpp ../main/mainwindow.h \
 		../../../Qt/5.12.0/gcc_64/include/QtGui/qtouchdevice.h \
 		../../../Qt/5.12.0/gcc_64/include/QtWidgets/qtabwidget.h \
 		../../../Qt/5.12.0/gcc_64/include/QtGui/qicon.h \
-		ui_mainwindow.h
+		ui_mainwindow.h \
+		../../../Qt/5.12.0/gcc_64/include/QtCore/QVariant \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/QApplication \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/qapplication.h \
+		../../../Qt/5.12.0/gcc_64/include/QtCore/qcoreapplication.h \
+		../../../Qt/5.12.0/gcc_64/include/QtCore/qeventloop.h \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/qdesktopwidget.h \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/qguiapplication.h \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/qinputmethod.h \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/QMenuBar \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/qmenubar.h \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/qmenu.h \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/qaction.h \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/qactiongroup.h \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/QStatusBar \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/qstatusbar.h \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/QToolBar \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/qtoolbar.h \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/QWidget
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../main/mainwindow.cpp
 
 enemy.o: ../main/enemy.cpp ../main/enemy.h \
@@ -2059,6 +2078,8 @@ game.o: ../main/game.cpp ../main/game.h \
 		../../../Qt/5.12.0/gcc_64/include/QtCore/qtimer.h \
 		../../../Qt/5.12.0/gcc_64/include/QtCore/qbasictimer.h \
 		../../../Qt/5.12.0/gcc_64/include/QtGui/QFont \
+		../../../Qt/5.12.0/gcc_64/include/QtCore/QThread \
+		../../../Qt/5.12.0/gcc_64/include/QtCore/qthread.h \
 		../main/block.h \
 		../../../Qt/5.12.0/gcc_64/include/QtWidgets/QScrollBar \
 		../../../Qt/5.12.0/gcc_64/include/QtWidgets/qscrollbar.h \
@@ -2615,7 +2636,63 @@ button.o: ../main/button.cpp ../main/button.h \
 		../../../Qt/5.12.0/gcc_64/include/QtWidgets/qgraphicssceneevent.h \
 		../../../Qt/5.12.0/gcc_64/include/QtGui/QBrush \
 		../../../Qt/5.12.0/gcc_64/include/QtGui/qbrush.h \
-		../../../Qt/5.12.0/gcc_64/include/QtWidgets/QGraphicsTextItem
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/QGraphicsTextItem \
+		../main/globals.h \
+		../main/game.h \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/QGraphicsView \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/qgraphicsview.h \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/qpainter.h \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/qtextoption.h \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/qpen.h \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/qfontinfo.h \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/qfont.h \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/qfontmetrics.h \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/qscrollarea.h \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/qabstractscrollarea.h \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/qframe.h \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/qwidget.h \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/qpalette.h \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/qsizepolicy.h \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/qcursor.h \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/qkeysequence.h \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/qevent.h \
+		../../../Qt/5.12.0/gcc_64/include/QtCore/qurl.h \
+		../../../Qt/5.12.0/gcc_64/include/QtCore/qurlquery.h \
+		../../../Qt/5.12.0/gcc_64/include/QtCore/qfile.h \
+		../../../Qt/5.12.0/gcc_64/include/QtCore/qfiledevice.h \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/qvector2d.h \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/qtouchdevice.h \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/qgraphicsscene.h \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/QWidget \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/QGraphicsScene \
+		../main/player.h \
+		../../../Qt/5.12.0/gcc_64/include/QtCore/QObject \
+		../main/enemy.h \
+		../../../Qt/5.12.0/gcc_64/include/QtMultimedia/QMediaPlayer \
+		../../../Qt/5.12.0/gcc_64/include/QtMultimedia/qmediaplayer.h \
+		../../../Qt/5.12.0/gcc_64/include/QtMultimedia/qmediaobject.h \
+		../../../Qt/5.12.0/gcc_64/include/QtMultimedia/qtmultimediaglobal.h \
+		../../../Qt/5.12.0/gcc_64/include/QtMultimedia/qtmultimedia-config.h \
+		../../../Qt/5.12.0/gcc_64/include/QtMultimedia/qmultimedia.h \
+		../../../Qt/5.12.0/gcc_64/include/QtMultimedia/qmediacontent.h \
+		../../../Qt/5.12.0/gcc_64/include/QtMultimedia/qmediaresource.h \
+		../../../Qt/5.12.0/gcc_64/include/QtNetwork/qnetworkrequest.h \
+		../../../Qt/5.12.0/gcc_64/include/QtNetwork/qtnetworkglobal.h \
+		../../../Qt/5.12.0/gcc_64/include/QtNetwork/qtnetwork-config.h \
+		../../../Qt/5.12.0/gcc_64/include/QtCore/QSharedDataPointer \
+		../../../Qt/5.12.0/gcc_64/include/QtCore/QString \
+		../../../Qt/5.12.0/gcc_64/include/QtCore/QUrl \
+		../../../Qt/5.12.0/gcc_64/include/QtCore/QVariant \
+		../../../Qt/5.12.0/gcc_64/include/QtMultimedia/qmediaenumdebug.h \
+		../../../Qt/5.12.0/gcc_64/include/QtCore/qmetaobject.h \
+		../../../Qt/5.12.0/gcc_64/include/QtMultimedia/qaudio.h \
+		../../../Qt/5.12.0/gcc_64/include/QtNetwork/qnetworkconfiguration.h \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/QGraphicsPixmapItem \
+		../main/score.h \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/QPainter \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/QPixmap \
+		../../../Qt/5.12.0/gcc_64/include/QtCore/QVector \
+		../../../Qt/5.12.0/gcc_64/include/QtCore/QMutex
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o button.o ../main/button.cpp
 
 player.o: ../main/player.cpp ../main/player.h \
@@ -2747,6 +2824,8 @@ player.o: ../main/player.cpp ../main/player.h \
 		../../../Qt/5.12.0/gcc_64/include/QtGui/qbrush.h \
 		../../../Qt/5.12.0/gcc_64/include/QtGui/qfont.h \
 		../../../Qt/5.12.0/gcc_64/include/QtGui/qpen.h \
+		../../../Qt/5.12.0/gcc_64/include/QtCore/QThread \
+		../../../Qt/5.12.0/gcc_64/include/QtCore/qthread.h \
 		../main/game.h \
 		../../../Qt/5.12.0/gcc_64/include/QtWidgets/QGraphicsView \
 		../../../Qt/5.12.0/gcc_64/include/QtWidgets/qgraphicsview.h \

@@ -11,6 +11,8 @@ public:
     virtual ~Enemy();
     QGraphicsPixmapItem* collidesWithBlocks(QList<QGraphicsPixmapItem *> blocks);
     QGraphicsPixmapItem* crashesIntoBlock(QList<QGraphicsPixmapItem *> blocks);
+    QTimer * timerEnemyMove;
+    QTimer * timerChangeImageEnemy;
 
 public slots:
     void move();

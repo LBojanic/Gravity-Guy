@@ -3,6 +3,7 @@
 #include <QKeyEvent>
 #include <QTimer>
 #include <QGraphicsScene>
+#include <QThread>
 #include "enemy.h"
 #include <QDebug>
 #include "game.h"
@@ -27,20 +28,18 @@ Player::Player(Enemy * enemy) : m_enemy(enemy)
     jumpSound->setMedia(QUrl("qrc:/sounds/jump.wav"));
 
     //creating timer object for movement
-    QTimer * timer = new QTimer();
+    timerMove = new QTimer();
     //setting timer signals and slots
-    connect(timer, SIGNAL(timeout()), this, SLOT(move()));
+    connect(timerMove, SIGNAL(timeout()), this, SLOT(move()));
     //starting the timer
-    timer->start(5);
+    timerMove->start(5);
 
     //creating timer object for animation
-    QTimer * timer2 = new QTimer();
+    timerChangeImagePlayer = new QTimer();
     //setting timer signals and slots
-    connect(timer2, SIGNAL(timeout()), this, SLOT(changeImage()));
+    connect(timerChangeImagePlayer, SIGNAL(timeout()), this, SLOT(changeImage()));
     //starting the timer
-    timer2->start(60);
-
-
+    timerChangeImagePlayer->start(60);
 }
 
 //gravity setter
@@ -68,8 +67,8 @@ void Player::move()
         //if our player goes beneath window lower limit then its gameover, otherwise translate
         if(y() + sceneBoundingRect().height() < scene()->height() && !collidesWithBlocks(game->blocks)) {
             setPos(x(), y() + 1);
-        } else {
-            // gameover
+        } else if(y() + sceneBoundingRect().height() >= scene()->height() && !collidesWithBlocks(game->blocks)) {
+            setPos(x(), y() + 2);
         }
     }
     else
@@ -77,8 +76,8 @@ void Player::move()
         //if our player goes beyond upper limit then its gameover, otherwise translate
         if(y() > 0 && !collidesWithBlocks(game->blocks)) {
             setPos(x(), y() - 1);
-        } else {
-            // gameover
+        } else if(y() <= 0 && !collidesWithBlocks(game->blocks)) {
+            setPos(x(), y() - 2);
         }
 
     }
@@ -187,4 +186,9 @@ QGraphicsPixmapItem *Player::crashesIntoBlock(QList<QGraphicsPixmapItem *> block
     }
     mutex->unlock();
     return nullptr;
+}
+
+Enemy* Player::enemy()
+{
+    return m_enemy;
 }

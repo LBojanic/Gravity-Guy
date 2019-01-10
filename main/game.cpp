@@ -1,7 +1,8 @@
-#include "game.h"
+﻿#include "game.h"
 #include <QTimer>
 #include <QGraphicsTextItem>
 #include <QFont>
+#include <QThread>
 #include "enemy.h"
 #include "block.h"
 #include <QMediaPlayer>
@@ -34,6 +35,11 @@ Game::Game(QWidget *parent){
     //Setting window size to be fixed
     setFixedSize(1280, 700);
     horizontalScrollBar()->setValue(1);
+
+    //Playing background music
+    backgroundMusic = new QMediaPlayer();
+    backgroundMusic->setMedia(QUrl("qrc:/sounds/gravityGuySoundtrack.mp3"));
+    backgroundMusic->play();
 }
 
 void Game::readMap(std::string & mapName)
@@ -115,6 +121,44 @@ void Game::displayMainMenu(){
     scene->addItem(quitButton);
 }
 
+void Game::gameOver(){
+    //setting sound effect on game over
+    backgroundMusic->stop();
+
+    QMediaPlayer* gameOverSound = new QMediaPlayer();
+    gameOverSound->setMedia(QUrl("qrc:/sounds/GameOver.wav"));
+    gameOverSound->play();
+
+
+    //when gameOver() is called we need all the timers to stop
+    disconnect(timerScore,SIGNAL(timeout()),this->score,SLOT(increase()));
+    disconnect(timerPlayerMove,SIGNAL(timeout()),this->player,SLOT(advance()));
+    disconnect(timerForMap, SIGNAL(timeout()), this, SLOT(drawFrame()));
+    disconnect(game->player->timerMove, SIGNAL(timeout()), this->player, SLOT(move()));
+    disconnect(game->player->timerChangeImagePlayer, SIGNAL(timeout()), this->player, SLOT(changeImage()));
+    disconnect(game->player->m_enemy->timerEnemyMove, SIGNAL(timeout()), this->player->m_enemy, SLOT(move()));
+    disconnect(game->player->m_enemy->timerChangeImageEnemy, SIGNAL(timeout()), this->player->m_enemy, SLOT(changeImage()));
+
+    //we use drawPanel() function to draw a semi transparent panel which pops up when game over is called
+    drawPanel(game->horizontalScrollBar()->value(), 0, game->width(), game->height(), Qt::black, 0.65);
+
+    //now we want to draw the actual panel where the buttons will be placed
+    drawPanel(game->horizontalScrollBar()->value()+width()/2-200,height()/2-200, 400, 400, Qt::lightGray, 0.75);
+
+    //TODO: make buttons for game restart and quit
+}
+
+void Game::drawPanel(int x, int y, int width, int height, QColor color, double opacity){
+   //drawing a panel on which we can put buttons and text, that appear for example on game over
+   QGraphicsRectItem *panel = new QGraphicsRectItem(x, y, width, height);
+   QBrush brush;
+   brush.setStyle(Qt::SolidPattern);
+   brush.setColor(color);
+   panel->setBrush(brush);
+   panel->setOpacity(opacity);
+   scene->addItem(panel);
+}
+
 void Game::drawFrame()
 {
     mutex->lock();
@@ -171,26 +215,19 @@ void Game::start(){
     currentFrame = 12;
     readMap(name);
 
-
-
     //Setting position of the player
     player->setPos(width()/2 - player->boundingRect().width()/2, height()/2 - player->sceneBoundingRect().height()/2);
     //Setting position of the enemy
     enemy->setPos(100, height()/2 - enemy->boundingRect().height()/2);
     score->setPos(10, 10);
     //timer for score increasing
-    QTimer * timer = new QTimer();
-    connect(timer,SIGNAL(timeout()),this->score,SLOT(increase()));
-    timer->start(50);
+    timerScore = new QTimer();
+    connect(timerScore,SIGNAL(timeout()),this->score,SLOT(increase()));
+    timerScore->start(50);
 
     //creating timer for moving our view forward
     //we are not moving view actually, we move every object and simulate moving view
-    QTimer * timer2 = new QTimer();
-    connect(timer2,SIGNAL(timeout()),this->player,SLOT(advance()));
-    timer2->start(5);
-
-    //Playing background music
-    QMediaPlayer * music = new QMediaPlayer();
-    music->setMedia(QUrl("qrc:/sounds/gravityGuySoundtrack.mp3"));
-    music->play();
+    timerPlayerMove = new QTimer();
+    connect(timerPlayerMove,SIGNAL(timeout()),this->player,SLOT(advance()));
+    timerPlayerMove->start(5);
 }
