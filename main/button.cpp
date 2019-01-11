@@ -11,6 +11,10 @@ Button::Button(QString path, int width, int height, QGraphicsItem *parent):QGrap
     setAcceptHoverEvents(true);
 }
 
+Button::~Button()
+{
+}
+
 void Button::mousePressEvent(QGraphicsSceneMouseEvent *event){
     //when the mouse is pressed on a button we need to activate a signal
     emit clicked();
@@ -33,5 +37,6 @@ void Button::changeButtonIcon(QString path)
     m_path = path;
     setPixmap(QPixmap(":/images/buttons/" + path + ".png").scaled(m_width, m_height));
 }
+
 
 

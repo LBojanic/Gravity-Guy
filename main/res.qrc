@@ -6,6 +6,8 @@
     </qresource>
     <qresource prefix="/images">
         <file>background.png</file>
+        <file>pauseText.png</file>
+        <file>metalTexture.jpg</file>
     </qresource>
     <qresource prefix="/images/player/run">
         <file>71.png</file>

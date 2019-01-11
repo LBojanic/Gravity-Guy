@@ -109,8 +109,11 @@ void Player::advance()
     if(!crashesIntoBlock(game->blocks)) //move only if player doesn't collide with block on it's path
         setPos(x() + 2, y());
     game->horizontalScrollBar()->setValue(game->horizontalScrollBar()->value() + 2);
-    if(game->horizontalScrollBar()->value() != game->horizontalScrollBar()->maximum())
+    if(game->horizontalScrollBar()->value() != game->horizontalScrollBar()->maximum()){
         game->score->setPos(game->score->x() + 2, game->score->y());
+        game->soundButton->setPos(game->soundButton->x() + 2, game->soundButton->y());
+        game->pauseButton->setPos(game->pauseButton->x() + 2, game->pauseButton->y());
+    }
 
 }
 
@@ -191,4 +194,18 @@ QGraphicsPixmapItem *Player::crashesIntoBlock(QList<QGraphicsPixmapItem *> block
 Enemy* Player::enemy()
 {
     return m_enemy;
+}
+
+void Player::focusOutEvent(QFocusEvent *event)
+{
+    this->setFocus();
+}
+void Player::focusInEvent(QFocusEvent *event)
+{
+
+}
+
+QMediaPlayer *Player::getJumpSound()
+{
+    return jumpSound;
 }

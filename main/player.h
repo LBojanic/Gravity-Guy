@@ -19,6 +19,9 @@ public:
     QTimer * timerMove;
     QTimer * timerChangeImagePlayer;
     Enemy * m_enemy;
+    void focusOutEvent(QFocusEvent* event = nullptr);
+    void focusInEvent(QFocusEvent* event = nullptr);
+    QMediaPlayer * getJumpSound();
 
 public slots:
     void move();

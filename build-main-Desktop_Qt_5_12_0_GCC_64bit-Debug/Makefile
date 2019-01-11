@@ -747,7 +747,9 @@ compiler_rcc_clean:
 	-$(DEL_FILE) qrc_res.cpp
 qrc_res.cpp: ../main/res.qrc \
 		../../../Qt/5.12.0/gcc_64/bin/rcc \
+		../main/pauseText.png \
 		../main/background.png \
+		../main/metalTexture.jpg \
 		../main/enemy00.png \
 		../main/enemy01.png \
 		../main/enemy60.png \

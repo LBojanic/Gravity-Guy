@@ -122,7 +122,6 @@ void Game::displayMainMenu(){
     connect(soundButton, SIGNAL(clicked()), this, SLOT(changeSoundIcon()));
     scene->addItem(soundButton);
 
-
     //creating the 'play' button
     Button* playButton = new Button(QString("play"), 100, 100);
     int playButtonXPos = this->width()/2 - playButton->boundingRect().width()/2 - 100;
@@ -162,13 +161,33 @@ void Game::gameOver(){
     //we use drawPanel() function to draw a semi transparent panel which pops up when game over is called
     drawPanel(game->horizontalScrollBar()->value(), 0, game->width(), game->height(), Qt::black, 0.65);
 
-    //now we want to draw the actual panel where the buttons will be placed
-    drawPanel(game->horizontalScrollBar()->value()+width()/2-200,height()/2-200, 400, 400, Qt::lightGray, 0.75);
-
     //TODO: make buttons for game restart and quit
 }
 
-void Game::drawPanel(int x, int y, int width, int height, QColor color, double opacity){
+void Game::displayPausePanel(){
+    //we use drawPanel() function to draw a semi transparent panel which pops up when pause button is clicked
+    panel = drawPanel(game->horizontalScrollBar()->value(), 0, game->width(), game->height(), Qt::black, 0.90);
+
+    //setting the pause text
+    QGraphicsPixmapItem* pauseText = new QGraphicsPixmapItem();
+    pauseText->setPixmap(QPixmap(":images/pauseText.png").scaled(0.8*574, 0.8*121));
+    pauseText->setPos(game->horizontalScrollBar()->value()+this->width()/2-pauseText->boundingRect().width()/2, 250);
+    scene->addItem(pauseText);
+
+    //setting the resume button
+    resumeButton = new Button(QString("play"), 100, 100);
+    resumeButton->setPos(game->horizontalScrollBar()->value()+width()/2-150,height()/2+50);
+    scene->addItem(resumeButton);
+    connect(resumeButton, SIGNAL(clicked()), this, SLOT(resumeGame()));
+
+    //setting the return to main menu button
+    returnToMenuButton = new Button(QString("quit"), 100, 100);
+    returnToMenuButton->setPos(game->horizontalScrollBar()->value()+width()/2+50,height()/2+50);
+    scene->addItem(returnToMenuButton);
+    connect(returnToMenuButton, SIGNAL(clicked()), this, SLOT(close()));
+}
+
+QGraphicsRectItem* Game::drawPanel(int x, int y, int width, int height, QColor color, double opacity){
    //drawing a panel on which we can put buttons and text, that appear for example on game over
    QGraphicsRectItem *panel = new QGraphicsRectItem(x, y, width, height);
    QBrush brush;
@@ -177,6 +196,17 @@ void Game::drawPanel(int x, int y, int width, int height, QColor color, double o
    panel->setBrush(brush);
    panel->setOpacity(opacity);
    scene->addItem(panel);
+
+   //now we want to draw the actual panel where the buttons will be placed
+   QGraphicsPixmapItem *panel2 = new QGraphicsPixmapItem();
+   panel2->setPixmap(QPixmap(":/images/metalTexture.jpg").scaled(600, 400));
+   panel2->setPos(x+this->width()/2-300, y+this->height()/2-200);
+   panel2->setOpacity(1);
+
+   scene->addItem(panel2);
+   panel2->setParentItem(panel);
+
+   return panel;
 }
 
 void Game::drawFrame()
@@ -212,6 +242,8 @@ void Game::drawFrame()
 void Game::start(){
     //start() is called after the user presses the 'play' button in the main menu, which starts the game
 
+    gameStartedInd = 1; //when we go back to the main menu we need to reset this indicator
+
     //clear the screen
     scene->clear();
 
@@ -235,6 +267,22 @@ void Game::start(){
     currentFrame = 12;
     readMap(name);
 
+    soundButton = new Button(QString("soundOn"), 50, 50);
+    int soundButtonXPos = this->width() - 100;
+    int soundButtonYPos = 0 + 50;
+    soundButton->setPos(soundButtonXPos, soundButtonYPos);
+    soundIconIndicator = 1; //currently there is sound and the button is soundOn
+    connect(soundButton, SIGNAL(clicked()), this, SLOT(changeSoundIcon()));
+    scene->addItem(soundButton);
+
+    //set pause button
+    pauseButton = new Button(QString("pause"), 50, 50);
+    int pauseButtonXPos = this->width() - 170;
+    int pauseButtonYPos = 0 + 50;
+    pauseButton->setPos(pauseButtonXPos, pauseButtonYPos);
+    connect(pauseButton, SIGNAL(clicked()), this, SLOT(pause()));
+    scene->addItem(pauseButton);
+
     //Setting position of the player
     player->setPos(width()/2 - player->boundingRect().width()/2, height()/2 - player->sceneBoundingRect().height()/2);
     //Setting position of the enemy
@@ -250,6 +298,7 @@ void Game::start(){
     timerPlayerMove = new QTimer();
     connect(timerPlayerMove,SIGNAL(timeout()),this->player,SLOT(advance()));
     timerPlayerMove->start(5);
+
 }
 
 void Game::changeSoundIcon()
@@ -259,6 +308,8 @@ void Game::changeSoundIcon()
     if(soundIconIndicator == 1){
         backgroundMusic->stop();
         soundIconIndicator = 0;
+        if(gameStartedInd)
+            game->player->getJumpSound()->setMuted(false);
         soundButton->changeButtonIcon("soundOff");
     }
     //if the indicator is 0 then by clicking on the soundButton music needs to be played, and the button icon
@@ -266,6 +317,43 @@ void Game::changeSoundIcon()
     else{
         game->backgroundMusic->play();
         soundIconIndicator = 1;
+        if(gameStartedInd)
+            game->player->getJumpSound()->setMuted(false);
         soundButton->changeButtonIcon("soundOn");
     }
+}
+
+void Game::pause(){
+    //when the user clicks on pause button, we want all the timers to stop
+    disconnect(timerScore,SIGNAL(timeout()),this->score,SLOT(increase()));
+    disconnect(timerPlayerMove,SIGNAL(timeout()),this->player,SLOT(advance()));
+    disconnect(timerForMap, SIGNAL(timeout()), this, SLOT(drawFrame()));
+    disconnect(game->player->timerMove, SIGNAL(timeout()), this->player, SLOT(move()));
+    disconnect(game->player->timerChangeImagePlayer, SIGNAL(timeout()), this->player, SLOT(changeImage()));
+    disconnect(game->player->m_enemy->timerEnemyMove, SIGNAL(timeout()), this->player->m_enemy, SLOT(move()));
+    disconnect(game->player->m_enemy->timerChangeImageEnemy, SIGNAL(timeout()), this->player->m_enemy, SLOT(changeImage()));
+
+    displayPausePanel();
+}
+
+
+void Game::resumeGame()
+{
+    //after the user presses on resume game button the game must go on
+    //from where it was paused, and the resume button need to vanish
+    scene->removeItem(resumeButton);
+    delete resumeButton;
+    scene->removeItem(returnToMenuButton);
+    delete returnToMenuButton;
+    scene->removeItem(panel);
+    delete panel;
+
+    connect(timerScore,SIGNAL(timeout()),this->score,SLOT(increase()));
+    connect(timerPlayerMove,SIGNAL(timeout()),this->player,SLOT(advance()));
+    connect(timerForMap, SIGNAL(timeout()), this, SLOT(drawFrame()));
+    connect(game->player->timerMove, SIGNAL(timeout()), this->player, SLOT(move()));
+    connect(game->player->timerChangeImagePlayer, SIGNAL(timeout()), this->player, SLOT(changeImage()));
+    connect(game->player->m_enemy->timerEnemyMove, SIGNAL(timeout()), this->player->m_enemy, SLOT(move()));
+    connect(game->player->m_enemy->timerChangeImageEnemy, SIGNAL(timeout()), this->player->m_enemy, SLOT(changeImage()));
+
 }

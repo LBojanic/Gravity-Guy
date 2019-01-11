@@ -24,7 +24,12 @@ public:
     QVector<QString> mapVector;
     void displayMainMenu();
     void gameOver();
-
+    Button* soundButton;
+    Button* pauseButton;
+    Button* resumeButton;
+    Button* returnToMenuButton;
+    void displayPausePanel();
+    QGraphicsRectItem* panel;
 
 public slots:
     void drawFrame();
@@ -32,14 +37,16 @@ public slots:
     //start is used to handle the clicked() signal
     void start();
     void changeSoundIcon();
+    void resumeGame();
+    void pause();
 
 private:
     QTimer * timerForMap;
     QTimer * timerScore;
     QTimer * timerPlayerMove;
     int soundIconIndicator;
-    Button* soundButton;
-    void drawPanel(int x, int y, int width, int height, QColor color, double opacity);
+    int gameStartedInd = 0;
+    QGraphicsRectItem* drawPanel(int x, int y, int width, int height, QColor color, double opacity);
 
 };
 #endif // GAME_H

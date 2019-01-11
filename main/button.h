@@ -8,7 +8,7 @@ class Button: public QObject, public QGraphicsPixmapItem{
     Q_OBJECT
 public:
     Button(QString path, int width, int height, QGraphicsItem* parent=NULL);
-
+    ~Button();
     //when the mouse cursor presses on the button the signal clicked() will be emitted
     //slots connected to it will handle the response
     void mousePressEvent(QGraphicsSceneMouseEvent* event);
@@ -20,6 +20,7 @@ public:
 
 signals:
     void clicked();
+public slots:
 
 private:
     QGraphicsTextItem* message;
