@@ -780,6 +780,21 @@ qrc_res.cpp: ../main/res.qrc \
 		../main/60.png \
 		../main/enemy71.png \
 		../main/61.png \
+		../main/yellowRobot.png \
+		../main/redRobot.png \
+		../main/soundOffHover.png \
+		../main/soundOff.png \
+		../main/reload.png \
+		../main/soundOnHover.png \
+		../main/reloadHover.png \
+		../main/play.png \
+		../main/playHover.png \
+		../main/logo.png \
+		../main/soundOn.png \
+		../main/quit.png \
+		../main/pause.png \
+		../main/quitHover.png \
+		../main/pauseHover.png \
 		../main/GameOver.wav \
 		../main/jump.wav \
 		../main/gravityGuySoundtrack.mp3 \
@@ -1262,6 +1277,9 @@ moc_game.cpp: ../../../Qt/5.12.0/gcc_64/include/QtWidgets/QGraphicsView \
 		../../../Qt/5.12.0/gcc_64/include/QtGui/QPainter \
 		../../../Qt/5.12.0/gcc_64/include/QtGui/QPixmap \
 		../../../Qt/5.12.0/gcc_64/include/QtCore/QVector \
+		../main/button.h \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/QGraphicsSceneMouseEvent \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/qgraphicssceneevent.h \
 		../main/game.h \
 		moc_predefs.h \
 		../../../Qt/5.12.0/gcc_64/bin/moc
@@ -1642,6 +1660,9 @@ main.o: ../main/main.cpp ../main/mainwindow.h \
 		../../../Qt/5.12.0/gcc_64/include/QtGui/QPainter \
 		../../../Qt/5.12.0/gcc_64/include/QtGui/QPixmap \
 		../../../Qt/5.12.0/gcc_64/include/QtCore/QVector \
+		../main/button.h \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/QGraphicsSceneMouseEvent \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/qgraphicssceneevent.h \
 		../main/globals.h \
 		../../../Qt/5.12.0/gcc_64/include/QtCore/QMutex \
 		../../../Qt/5.12.0/gcc_64/include/QtWidgets/QDesktopWidget
@@ -1754,25 +1775,7 @@ mainwindow.o: ../main/mainwindow.cpp ../main/mainwindow.h \
 		../../../Qt/5.12.0/gcc_64/include/QtGui/qtouchdevice.h \
 		../../../Qt/5.12.0/gcc_64/include/QtWidgets/qtabwidget.h \
 		../../../Qt/5.12.0/gcc_64/include/QtGui/qicon.h \
-		ui_mainwindow.h \
-		../../../Qt/5.12.0/gcc_64/include/QtCore/QVariant \
-		../../../Qt/5.12.0/gcc_64/include/QtWidgets/QApplication \
-		../../../Qt/5.12.0/gcc_64/include/QtWidgets/qapplication.h \
-		../../../Qt/5.12.0/gcc_64/include/QtCore/qcoreapplication.h \
-		../../../Qt/5.12.0/gcc_64/include/QtCore/qeventloop.h \
-		../../../Qt/5.12.0/gcc_64/include/QtWidgets/qdesktopwidget.h \
-		../../../Qt/5.12.0/gcc_64/include/QtGui/qguiapplication.h \
-		../../../Qt/5.12.0/gcc_64/include/QtGui/qinputmethod.h \
-		../../../Qt/5.12.0/gcc_64/include/QtWidgets/QMenuBar \
-		../../../Qt/5.12.0/gcc_64/include/QtWidgets/qmenubar.h \
-		../../../Qt/5.12.0/gcc_64/include/QtWidgets/qmenu.h \
-		../../../Qt/5.12.0/gcc_64/include/QtWidgets/qaction.h \
-		../../../Qt/5.12.0/gcc_64/include/QtWidgets/qactiongroup.h \
-		../../../Qt/5.12.0/gcc_64/include/QtWidgets/QStatusBar \
-		../../../Qt/5.12.0/gcc_64/include/QtWidgets/qstatusbar.h \
-		../../../Qt/5.12.0/gcc_64/include/QtWidgets/QToolBar \
-		../../../Qt/5.12.0/gcc_64/include/QtWidgets/qtoolbar.h \
-		../../../Qt/5.12.0/gcc_64/include/QtWidgets/QWidget
+		ui_mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../main/mainwindow.cpp
 
 enemy.o: ../main/enemy.cpp ../main/enemy.h \
@@ -1927,6 +1930,9 @@ enemy.o: ../main/enemy.cpp ../main/enemy.h \
 		../../../Qt/5.12.0/gcc_64/include/QtGui/QPainter \
 		../../../Qt/5.12.0/gcc_64/include/QtGui/QPixmap \
 		../../../Qt/5.12.0/gcc_64/include/QtCore/QVector \
+		../main/button.h \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/QGraphicsSceneMouseEvent \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/qgraphicssceneevent.h \
 		../../../Qt/5.12.0/gcc_64/include/QtCore/QMutex
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o enemy.o ../main/enemy.cpp
 
@@ -2074,6 +2080,9 @@ game.o: ../main/game.cpp ../main/game.h \
 		../../../Qt/5.12.0/gcc_64/include/QtGui/QPainter \
 		../../../Qt/5.12.0/gcc_64/include/QtGui/QPixmap \
 		../../../Qt/5.12.0/gcc_64/include/QtCore/QVector \
+		../main/button.h \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/QGraphicsSceneMouseEvent \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/qgraphicssceneevent.h \
 		../../../Qt/5.12.0/gcc_64/include/QtCore/QTimer \
 		../../../Qt/5.12.0/gcc_64/include/QtCore/qtimer.h \
 		../../../Qt/5.12.0/gcc_64/include/QtCore/qbasictimer.h \
@@ -2091,10 +2100,7 @@ game.o: ../main/game.cpp ../main/game.h \
 		../../../Qt/5.12.0/gcc_64/include/QtWidgets/qmessagebox.h \
 		../../../Qt/5.12.0/gcc_64/include/QtWidgets/qdialog.h \
 		../main/globals.h \
-		../../../Qt/5.12.0/gcc_64/include/QtCore/QMutex \
-		../main/button.h \
-		../../../Qt/5.12.0/gcc_64/include/QtWidgets/QGraphicsSceneMouseEvent \
-		../../../Qt/5.12.0/gcc_64/include/QtWidgets/qgraphicssceneevent.h
+		../../../Qt/5.12.0/gcc_64/include/QtCore/QMutex
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o game.o ../main/game.cpp
 
 score.o: ../main/score.cpp ../main/score.h \
@@ -2242,6 +2248,9 @@ score.o: ../main/score.cpp ../main/score.h \
 		../../../Qt/5.12.0/gcc_64/include/QtNetwork/qnetworkconfiguration.h \
 		../../../Qt/5.12.0/gcc_64/include/QtWidgets/QGraphicsPixmapItem \
 		../../../Qt/5.12.0/gcc_64/include/QtCore/QVector \
+		../main/button.h \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/QGraphicsSceneMouseEvent \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/qgraphicssceneevent.h \
 		../../../Qt/5.12.0/gcc_64/include/QtCore/QMutex \
 		../../../Qt/5.12.0/gcc_64/include/QtGui/QFont
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o score.o ../main/score.cpp
@@ -2391,6 +2400,9 @@ globals.o: ../main/globals.cpp ../main/globals.h \
 		../../../Qt/5.12.0/gcc_64/include/QtGui/QPainter \
 		../../../Qt/5.12.0/gcc_64/include/QtGui/QPixmap \
 		../../../Qt/5.12.0/gcc_64/include/QtCore/QVector \
+		../main/button.h \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/QGraphicsSceneMouseEvent \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/qgraphicssceneevent.h \
 		../../../Qt/5.12.0/gcc_64/include/QtCore/QMutex
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o globals.o ../main/globals.cpp
 
@@ -2540,6 +2552,9 @@ block.o: ../main/block.cpp ../main/block.h \
 		../../../Qt/5.12.0/gcc_64/include/QtGui/QPainter \
 		../../../Qt/5.12.0/gcc_64/include/QtGui/QPixmap \
 		../../../Qt/5.12.0/gcc_64/include/QtCore/QVector \
+		../main/button.h \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/QGraphicsSceneMouseEvent \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/qgraphicssceneevent.h \
 		../../../Qt/5.12.0/gcc_64/include/QtCore/QMutex
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o block.o ../main/block.cpp
 
@@ -2846,6 +2861,9 @@ player.o: ../main/player.cpp ../main/player.h \
 		../../../Qt/5.12.0/gcc_64/include/QtGui/QPainter \
 		../../../Qt/5.12.0/gcc_64/include/QtGui/QPixmap \
 		../../../Qt/5.12.0/gcc_64/include/QtCore/QVector \
+		../main/button.h \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/QGraphicsSceneMouseEvent \
+		../../../Qt/5.12.0/gcc_64/include/QtWidgets/qgraphicssceneevent.h \
 		../../../Qt/5.12.0/gcc_64/include/QtWidgets/QScrollBar \
 		../../../Qt/5.12.0/gcc_64/include/QtWidgets/qscrollbar.h \
 		../../../Qt/5.12.0/gcc_64/include/QtWidgets/qabstractslider.h \

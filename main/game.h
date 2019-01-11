@@ -8,6 +8,7 @@
 #include "score.h"
 #include <QVector>
 #include <QString>
+#include <button.h>
 
 class Game: public QGraphicsView{
     Q_OBJECT
@@ -19,6 +20,7 @@ public:
     Score * score;
     QList<QGraphicsPixmapItem *> blocks;
     int currentFrame;
+    QMediaPlayer* backgroundMusic;
     QVector<QString> mapVector;
     void displayMainMenu();
     void gameOver();
@@ -29,12 +31,15 @@ public slots:
     //start() needs to be a public slot because when the 'play' button is clicked
     //start is used to handle the clicked() signal
     void start();
+    void changeSoundIcon();
 
 private:
     QTimer * timerForMap;
     QTimer * timerScore;
     QTimer * timerPlayerMove;
+    int soundIconIndicator;
+    Button* soundButton;
     void drawPanel(int x, int y, int width, int height, QColor color, double opacity);
-    QMediaPlayer* backgroundMusic;
+
 };
 #endif // GAME_H

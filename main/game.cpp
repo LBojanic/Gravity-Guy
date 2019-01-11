@@ -93,33 +93,53 @@ void Game::readMap(std::string & mapName)
 }
 
 void Game::displayMainMenu(){
-    //title
-    QGraphicsTextItem* title = new QGraphicsTextItem(QString("Gravity guy"));
-    //setting title font and size
-    QFont titleFont("Helvetica", 50); //TODO: maybe change the font and font size
-    title->setFont(titleFont);
-    //position for the title
-    int titleXPos = this->width()/2 - title->boundingRect().width()/2;
-    int titleYPos = 150; //TODO: maybe change the position of the title
-    title->setPos(titleXPos, titleYPos);
-    scene->addItem(title);
+    //setting logo on our main menu panel
+    QGraphicsPixmapItem* logo = new QGraphicsPixmapItem();
+    logo->setPixmap(QPixmap(":images/buttons/logo.png").scaled(610, 310));
+    int logoX = this->width()/2 - logo->boundingRect().width()/2;
+    int logoY = 100;
+    logo->setPos(logoX, logoY);
+    scene->addItem(logo);
+
+    //setting pictures of robots for the main menu
+    QGraphicsPixmapItem* yellowRobot = new QGraphicsPixmapItem();
+    yellowRobot->setPixmap(QPixmap(":images/player/run/yellowRobot.png").scaled(600, 600));
+    yellowRobot->setPos(20, 70);
+    scene->addItem(yellowRobot);
+    QGraphicsPixmapItem* redRobot = new QGraphicsPixmapItem();
+    redRobot->setPixmap(QPixmap(":images/player/run/redRobot.png").scaled(600, 600));
+    int redRobotX = this->width() - redRobot->boundingRect().width() - 20;
+    redRobot->setPos(redRobotX, 70);
+    scene->addItem(redRobot);
+
+    //adding a sound button with the option to mute and unmute game sound
+    //which is followed by change of the sound button icon
+    soundButton = new Button(QString("soundOn"), 50, 50);
+    int soundButtonXPos = this->width() - 100;
+    int soundButtonYPos = 0 + 50;
+    soundButton->setPos(soundButtonXPos, soundButtonYPos);
+    soundIconIndicator = 1; //currently there is sound and the button is soundOn
+    connect(soundButton, SIGNAL(clicked()), this, SLOT(changeSoundIcon()));
+    scene->addItem(soundButton);
+
 
     //creating the 'play' button
-    Button* playButton = new Button(QString("Play"));
-    int playButtonXPos = this->width()/2 - playButton->boundingRect().width()/2;
-    int playButtonYPos = 350; //TODO: maybe change the play button position
+    Button* playButton = new Button(QString("play"), 100, 100);
+    int playButtonXPos = this->width()/2 - playButton->boundingRect().width()/2 - 100;
+    int playButtonYPos = 450;
     playButton->setPos(playButtonXPos, playButtonYPos);
     connect(playButton,SIGNAL(clicked()),this,SLOT(start()));
     scene->addItem(playButton);
 
     //creating the 'quit' button
-    Button* quitButton = new Button(QString("Quit"));
-    int quitButtonXPos = this->width()/2 - quitButton->boundingRect().width()/2;
-    int quitButtonYPos = 450; //TODO: maybe change the quit button position
+    Button* quitButton = new Button(QString("quit"), 100, 100);
+    int quitButtonXPos = this->width()/2 - quitButton->boundingRect().width()/2 + 100;
+    int quitButtonYPos = 450;
     quitButton->setPos(quitButtonXPos, quitButtonYPos);
     connect(quitButton,SIGNAL(clicked()),this,SLOT(close()));
     scene->addItem(quitButton);
 }
+
 
 void Game::gameOver(){
     //setting sound effect on game over
@@ -230,4 +250,22 @@ void Game::start(){
     timerPlayerMove = new QTimer();
     connect(timerPlayerMove,SIGNAL(timeout()),this->player,SLOT(advance()));
     timerPlayerMove->start(5);
+}
+
+void Game::changeSoundIcon()
+{
+    //if the indicator is 1 that means that there is sound currently, so the icon needs to change from soundOn
+    //to soundOff and the music needs to be stopped
+    if(soundIconIndicator == 1){
+        backgroundMusic->stop();
+        soundIconIndicator = 0;
+        soundButton->changeButtonIcon("soundOff");
+    }
+    //if the indicator is 0 then by clicking on the soundButton music needs to be played, and the button icon
+    //has to be set on soundOff
+    else{
+        game->backgroundMusic->play();
+        soundIconIndicator = 1;
+        soundButton->changeButtonIcon("soundOn");
+    }
 }

@@ -40,6 +40,8 @@
         <file>enemy61.png</file>
         <file>enemy70.png</file>
         <file>enemy71.png</file>
+        <file>yellowRobot.png</file>
+        <file>redRobot.png</file>
     </qresource>
     <qresource prefix="/tiles">
         <file>tile.png</file>
@@ -49,5 +51,20 @@
     </qresource>
     <qresource prefix="/scoreBar">
         <file>scoreBar.png</file>
+    </qresource>
+    <qresource prefix="/images/buttons">
+        <file>soundOnHover.png</file>
+        <file>soundOffHover.png</file>
+        <file>reloadHover.png</file>
+        <file>quitHover.png</file>
+        <file>playHover.png</file>
+        <file>pauseHover.png</file>
+        <file>soundOn.png</file>
+        <file>soundOff.png</file>
+        <file>reload.png</file>
+        <file>quit.png</file>
+        <file>play.png</file>
+        <file>pause.png</file>
+        <file>logo.png</file>
     </qresource>
 </RCC>
