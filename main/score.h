@@ -14,6 +14,17 @@ public:
     void setPos(int x, int y);
     int x();
     int y();
+    int width();
+    int height();
+    void setHeight(int height);
+    void setWidth(int width);
+    void setScore(int score);
+    void setFontSize(int size);
+    int getScore();
+    int getTextWidth();
+    int getTextHeight();
+    void setTextPos(int x, int y);
+
 public slots:
     void increase();
 
@@ -21,6 +32,9 @@ private:
     int m_score;
     int m_x;
     int m_y;
+    int m_height;
+    int m_width;
+    int m_font_size;
 };
 
 #endif // SCORE_H

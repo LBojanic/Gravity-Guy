@@ -165,18 +165,30 @@ void Game::gameOver(){
     //we use drawPanel() function to draw a semi transparent panel which pops up when game over is called
     drawPanel(game->horizontalScrollBar()->value(), 0, game->width(), game->height(), Qt::black, 0.90);
 
+    //setting the game over text
+    QGraphicsPixmapItem* gameOverText = new QGraphicsPixmapItem();
+    gameOverText->setPixmap(QPixmap(":images/gameoverText.png").scaled(1125*0.8, 163*0.8));
+    gameOverText->setPos(game->horizontalScrollBar()->value()+this->width()/2-gameOverText->boundingRect().width()/2, 220);
+    scene->addItem(gameOverText);
+
+    Score* scoreGameOver = new Score();
+    scoreGameOver->setPos(game->horizontalScrollBar()->value()+width()/2-scoreGameOver->width()/2,height()/2+50);
+    scoreGameOver->setHeight(100);
+    scoreGameOver->setFontSize(70);
+    scoreGameOver->setTextPos(scoreGameOver->x() + 30, scoreGameOver->y() + scoreGameOver->height()/2 - scoreGameOver->getTextHeight()/2);
+    scoreGameOver->setScore(game->score->getScore());
+
     //setting the restart button
     restartButton = new Button(QString("reload"), 100, 100);
-    restartButton->setPos(game->horizontalScrollBar()->value()+width()/2-150,height()/2+50);
+    restartButton->setPos(game->horizontalScrollBar()->value()+width()/2-250,height()/2+50);
     scene->addItem(restartButton);
     connect(restartButton, SIGNAL(clicked()), this, SLOT(restart()));
 
     //setting the return to main menu button
     returnToMenuButton = new Button(QString("quit"), 100, 100);
-    returnToMenuButton->setPos(game->horizontalScrollBar()->value()+width()/2+50,height()/2+50);
+    returnToMenuButton->setPos(game->horizontalScrollBar()->value()+width()/2+150,height()/2+50);
     scene->addItem(returnToMenuButton);
     connect(returnToMenuButton, SIGNAL(clicked()), this, SLOT(close()));
-    //TODO: make buttons for game restart and quit
 }
 
 void Game::displayPausePanel(){
@@ -185,8 +197,8 @@ void Game::displayPausePanel(){
 
     //setting the pause text
     QGraphicsPixmapItem* pauseText = new QGraphicsPixmapItem();
-    pauseText->setPixmap(QPixmap(":images/pauseText.png").scaled(0.8*574, 0.8*121));
-    pauseText->setPos(game->horizontalScrollBar()->value()+this->width()/2-pauseText->boundingRect().width()/2, 250);
+    pauseText->setPixmap(QPixmap(":images/pauseText.png").scaled(0.8*818, 0.8*164));
+    pauseText->setPos(game->horizontalScrollBar()->value()+this->width()/2-pauseText->boundingRect().width()/2, 220);
     pauseText->setParentItem(panel);
     scene->addItem(pauseText);
 
@@ -216,7 +228,7 @@ QGraphicsRectItem* Game::drawPanel(int x, int y, int width, int height, QColor c
 
    //now we want to draw the actual panel where the buttons will be placed
    QGraphicsPixmapItem *panel2 = new QGraphicsPixmapItem();
-   panel2->setPixmap(QPixmap(":/images/metalTexture.jpg").scaled(600, 400));
+   panel2->setPixmap(QPixmap(":/images/metalTexture.png").scaled(600, 400));
    panel2->setPos(x+this->width()/2-300, y+this->height()/2-200);
    panel2->setOpacity(1);
 

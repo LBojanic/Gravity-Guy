@@ -748,7 +748,10 @@ compiler_rcc_clean:
 qrc_res.cpp: ../main/res.qrc \
 		../../../Qt/5.12.0/gcc_64/bin/rcc \
 		../main/pauseText.png \
+		../main/metalTexture.png \
 		../main/background.png \
+		../main/logo.png \
+		../main/gameoverText.png \
 		../main/metalTexture.jpg \
 		../main/enemy00.png \
 		../main/enemy01.png \
@@ -800,6 +803,8 @@ qrc_res.cpp: ../main/res.qrc \
 		../main/GameOver.wav \
 		../main/jump.wav \
 		../main/gravityGuySoundtrack.mp3 \
+		../main/digital-7-mono.ttf \
+		../main/digital-7.ttf \
 		../main/level1.txt \
 		../main/scoreBar.png \
 		../main/tile.png
@@ -2254,7 +2259,9 @@ score.o: ../main/score.cpp ../main/score.h \
 		../../../Qt/5.12.0/gcc_64/include/QtWidgets/QGraphicsSceneMouseEvent \
 		../../../Qt/5.12.0/gcc_64/include/QtWidgets/qgraphicssceneevent.h \
 		../../../Qt/5.12.0/gcc_64/include/QtCore/QMutex \
-		../../../Qt/5.12.0/gcc_64/include/QtGui/QFont
+		../../../Qt/5.12.0/gcc_64/include/QtGui/QFont \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/QFontDatabase \
+		../../../Qt/5.12.0/gcc_64/include/QtGui/qfontdatabase.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o score.o ../main/score.cpp
 
 globals.o: ../main/globals.cpp ../main/globals.h \
