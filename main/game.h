@@ -28,6 +28,7 @@ public:
     Button* pauseButton;
     Button* resumeButton;
     Button* returnToMenuButton;
+    Button* restartButton;
     void displayPausePanel();
     QGraphicsRectItem* panel;
 
@@ -39,6 +40,7 @@ public slots:
     void changeSoundIcon();
     void resumeGame();
     void pause();
+    void restart();
 
 private:
     QTimer * timerForMap;

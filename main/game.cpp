@@ -18,6 +18,7 @@
 #include "player.h"
 
 Game::Game(QWidget *parent){
+    Q_UNUSED(parent);
     //in the Game constructor we set the scene, but to set the player, enemy, etc on the scene
     //we use start(), because we want those items to appear only after the user presses the 'play' button
 
@@ -44,6 +45,7 @@ Game::Game(QWidget *parent){
 
 void Game::readMap(std::string & mapName)
 {
+    Q_UNUSED(mapName);
     int x = 0;
     int y = 0;
     //initial coordinates for blocks
@@ -51,9 +53,11 @@ void Game::readMap(std::string & mapName)
     QFile file(":/maps/level1.txt");
     //if we can't open our map we return
     if(!file.open(QIODevice::ReadOnly)) {
-        QMessageBox::information(0, "error", file.errorString());
+        QMessageBox::information(nullptr, "error", file.errorString());
         return ;
     }
+    mapVector.clear();
+    blocks.clear();
     //making a stream from our file
     QTextStream in(&file);
     while(!in.atEnd()) {
@@ -63,7 +67,7 @@ void Game::readMap(std::string & mapName)
         mapVector.push_back(line);
 
     }
-
+    file.close();
     for(int j = 0; j < currentFrame; j++)
     {
         for(int i = 0; i < mapVector.length(); i++)
@@ -116,7 +120,7 @@ void Game::displayMainMenu(){
     //which is followed by change of the sound button icon
     soundButton = new Button(QString("soundOn"), 50, 50);
     int soundButtonXPos = this->width() - 100;
-    int soundButtonYPos = 0 + 50;
+    int soundButtonYPos = 0 + 20;
     soundButton->setPos(soundButtonXPos, soundButtonYPos);
     soundIconIndicator = 1; //currently there is sound and the button is soundOn
     connect(soundButton, SIGNAL(clicked()), this, SLOT(changeSoundIcon()));
@@ -159,8 +163,19 @@ void Game::gameOver(){
     disconnect(game->player->m_enemy->timerChangeImageEnemy, SIGNAL(timeout()), this->player->m_enemy, SLOT(changeImage()));
 
     //we use drawPanel() function to draw a semi transparent panel which pops up when game over is called
-    drawPanel(game->horizontalScrollBar()->value(), 0, game->width(), game->height(), Qt::black, 0.65);
+    drawPanel(game->horizontalScrollBar()->value(), 0, game->width(), game->height(), Qt::black, 0.90);
 
+    //setting the restart button
+    restartButton = new Button(QString("reload"), 100, 100);
+    restartButton->setPos(game->horizontalScrollBar()->value()+width()/2-150,height()/2+50);
+    scene->addItem(restartButton);
+    connect(restartButton, SIGNAL(clicked()), this, SLOT(restart()));
+
+    //setting the return to main menu button
+    returnToMenuButton = new Button(QString("quit"), 100, 100);
+    returnToMenuButton->setPos(game->horizontalScrollBar()->value()+width()/2+50,height()/2+50);
+    scene->addItem(returnToMenuButton);
+    connect(returnToMenuButton, SIGNAL(clicked()), this, SLOT(close()));
     //TODO: make buttons for game restart and quit
 }
 
@@ -172,7 +187,9 @@ void Game::displayPausePanel(){
     QGraphicsPixmapItem* pauseText = new QGraphicsPixmapItem();
     pauseText->setPixmap(QPixmap(":images/pauseText.png").scaled(0.8*574, 0.8*121));
     pauseText->setPos(game->horizontalScrollBar()->value()+this->width()/2-pauseText->boundingRect().width()/2, 250);
+    pauseText->setParentItem(panel);
     scene->addItem(pauseText);
+
 
     //setting the resume button
     resumeButton = new Button(QString("play"), 100, 100);
@@ -260,7 +277,7 @@ void Game::start(){
 
     //Create a score
     score = new Score();
-    scene->addItem(score);
+
 
     //here we call draw map method where we will draw levels
     std::string name("level1.txt");
@@ -269,7 +286,7 @@ void Game::start(){
 
     soundButton = new Button(QString("soundOn"), 50, 50);
     int soundButtonXPos = this->width() - 100;
-    int soundButtonYPos = 0 + 50;
+    int soundButtonYPos = 0 + 20;
     soundButton->setPos(soundButtonXPos, soundButtonYPos);
     soundIconIndicator = 1; //currently there is sound and the button is soundOn
     connect(soundButton, SIGNAL(clicked()), this, SLOT(changeSoundIcon()));
@@ -278,7 +295,7 @@ void Game::start(){
     //set pause button
     pauseButton = new Button(QString("pause"), 50, 50);
     int pauseButtonXPos = this->width() - 170;
-    int pauseButtonYPos = 0 + 50;
+    int pauseButtonYPos = 0 + 20;
     pauseButton->setPos(pauseButtonXPos, pauseButtonYPos);
     connect(pauseButton, SIGNAL(clicked()), this, SLOT(pause()));
     scene->addItem(pauseButton);
@@ -287,7 +304,7 @@ void Game::start(){
     player->setPos(width()/2 - player->boundingRect().width()/2, height()/2 - player->sceneBoundingRect().height()/2);
     //Setting position of the enemy
     enemy->setPos(100, height()/2 - enemy->boundingRect().height()/2);
-    score->setPos(10, 10);
+    score->setPos(20, 20);
     //timer for score increasing
     timerScore = new QTimer();
     connect(timerScore,SIGNAL(timeout()),this->score,SLOT(increase()));
@@ -306,16 +323,16 @@ void Game::changeSoundIcon()
     //if the indicator is 1 that means that there is sound currently, so the icon needs to change from soundOn
     //to soundOff and the music needs to be stopped
     if(soundIconIndicator == 1){
-        backgroundMusic->stop();
+        backgroundMusic->setMuted(true);
         soundIconIndicator = 0;
         if(gameStartedInd)
-            game->player->getJumpSound()->setMuted(false);
+            game->player->getJumpSound()->setMuted(true);
         soundButton->changeButtonIcon("soundOff");
     }
     //if the indicator is 0 then by clicking on the soundButton music needs to be played, and the button icon
     //has to be set on soundOff
     else{
-        game->backgroundMusic->play();
+        game->backgroundMusic->setMuted(false);
         soundIconIndicator = 1;
         if(gameStartedInd)
             game->player->getJumpSound()->setMuted(false);
@@ -332,8 +349,17 @@ void Game::pause(){
     disconnect(game->player->timerChangeImagePlayer, SIGNAL(timeout()), this->player, SLOT(changeImage()));
     disconnect(game->player->m_enemy->timerEnemyMove, SIGNAL(timeout()), this->player->m_enemy, SLOT(move()));
     disconnect(game->player->m_enemy->timerChangeImageEnemy, SIGNAL(timeout()), this->player->m_enemy, SLOT(changeImage()));
-
+    pauseButton->setEnabled(false);
+    soundButton->setEnabled(false);
     displayPausePanel();
+}
+
+void Game::restart()
+{
+
+    horizontalScrollBar()->setValue(1);
+    backgroundMusic->play();
+    QTimer::singleShot(1, this, SLOT(start()));
 }
 
 
@@ -347,6 +373,10 @@ void Game::resumeGame()
     delete returnToMenuButton;
     scene->removeItem(panel);
     delete panel;
+
+
+    pauseButton->setEnabled(true);
+    soundButton->setEnabled(true);
 
     connect(timerScore,SIGNAL(timeout()),this->score,SLOT(increase()));
     connect(timerPlayerMove,SIGNAL(timeout()),this->player,SLOT(advance()));

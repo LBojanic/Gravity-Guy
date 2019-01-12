@@ -198,11 +198,12 @@ Enemy* Player::enemy()
 
 void Player::focusOutEvent(QFocusEvent *event)
 {
+    Q_UNUSED(event);
     this->setFocus();
 }
 void Player::focusInEvent(QFocusEvent *event)
 {
-
+    Q_UNUSED(event);
 }
 
 QMediaPlayer *Player::getJumpSound()

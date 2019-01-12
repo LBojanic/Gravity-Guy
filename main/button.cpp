@@ -16,6 +16,7 @@ Button::~Button()
 }
 
 void Button::mousePressEvent(QGraphicsSceneMouseEvent *event){
+    Q_UNUSED(event);
     //when the mouse is pressed on a button we need to activate a signal
     emit clicked();
 }
@@ -23,11 +24,13 @@ void Button::mousePressEvent(QGraphicsSceneMouseEvent *event){
 
 
 void Button::hoverEnterEvent(QGraphicsSceneHoverEvent *event){
+    Q_UNUSED(event);
     //when the mouse hovers on the button area, we want to change the button picture
     setPixmap(QPixmap(":/images/buttons/" + m_path + "Hover.png").scaled(m_width, m_height));
 }
 
 void Button::hoverLeaveEvent(QGraphicsSceneHoverEvent *event){
+    Q_UNUSED(event);
     //when the mouse cursor leaves the button area, we want to change the button picture to what it was before
     setPixmap(QPixmap(":/images/buttons/" + m_path + ".png").scaled(m_width, m_height));
 }

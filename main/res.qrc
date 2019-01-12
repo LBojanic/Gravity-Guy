@@ -69,4 +69,8 @@
         <file>pause.png</file>
         <file>logo.png</file>
     </qresource>
+    <qresource prefix="/fonts">
+        <file>digital-7.ttf</file>
+        <file>digital-7-mono.ttf</file>
+    </qresource>
 </RCC>
