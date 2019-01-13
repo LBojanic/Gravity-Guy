@@ -1,9 +1,10 @@
 #include "block.h"
 #include <globals.h>
-Block::Block(int x, int y, int width, int height)
-    : m_x(x), m_y(y), m_width(width), m_height(height)
+Block::Block(int x, int y, QString photoPath, int width, int height)
+    : m_x(x), m_y(y), m_photoPath(photoPath), m_width(width), m_height(height)
 {
-    setPixmap(QPixmap(":/tiles/tile.png").scaled(125, 70));
+    QString fullPath = ":/tiles/" + photoPath + ".png";
+    setPixmap(QPixmap(fullPath).scaled(125, 70));
     setPos(m_x, m_y);
 }
 

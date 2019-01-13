@@ -29,6 +29,8 @@ Game::Game(QWidget *parent){
     //Setting scene size
     scene->setSceneRect(0, 0, std::numeric_limits<double>::max(), 700);
 
+
+
     setBackgroundBrush(QBrush(QImage(":/images/background.png").scaled(1280, 700)));
     setScene(scene);
     //Setting off horizontal scroll bar
@@ -79,7 +81,17 @@ void Game::readMap(std::string & mapName)
             if(c == '#')
             {
                 //make new block and add it to blocks list
-                Block * a = new Block(x, y);
+                Block * a = new Block(x, y, "tile");
+                blocks.append(a);
+                //set block coordinates
+                a->setPos(x, y);
+                //add item to scene
+                scene->addItem(a);
+            }
+            if(c == '$')
+            {
+                //make new block and add it to blocks list
+                Block * a = new Block(x, y, "tile2");
                 blocks.append(a);
                 //set block coordinates
                 a->setPos(x, y);
@@ -160,9 +172,11 @@ void Game::gameOver(){
     //setting sound effect on game over
     backgroundMusic->stop();
 
-    QMediaPlayer* gameOverSound = new QMediaPlayer();
-    gameOverSound->setMedia(QUrl("qrc:/sounds/GameOver.wav"));
-    gameOverSound->play();
+    if(!game->backgroundMusic->isMuted()) {
+        QMediaPlayer* gameOverSound = new QMediaPlayer();
+        gameOverSound->setMedia(QUrl("qrc:/sounds/GameOver.wav"));
+        gameOverSound->play();
+    }
 
 
     //when gameOver() is called we need all the timers to stop
@@ -271,7 +285,19 @@ void Game::drawFrame()
     for(auto row : mapVector) {
         if(row[currentFrame % mapVector[0].length()] == '#')
         {
-            Block * a = new Block(x, y);
+            Block * a = new Block(x, y, "tile");
+            mutex->lock();
+            blocks.append(a);
+            mutex->unlock();
+            //set block coordinates
+            a->setPos(x, y);
+            //add item to scene
+            scene->addItem(a);
+        }
+        if(row[currentFrame % mapVector[0].length()] == '$')
+        {
+
+            Block * a = new Block(x, y, "tile2");
             mutex->lock();
             blocks.append(a);
             mutex->unlock();
@@ -291,6 +317,7 @@ void Game::drawFrame()
             //add item to scene
             scene->addItem(a);
         }
+
         y += 70;
     }
 
@@ -304,6 +331,10 @@ void Game::start(){
     //clear the screen
     scene->clear();
 
+    sceneBackgroundHelper = new QGraphicsPixmapItem();
+    sceneBackgroundHelper->setPixmap(QPixmap(":/images/background2.png").scaled(1280, 700));
+    sceneBackgroundHelper->setPos(81*125, 0);
+    scene->addItem(sceneBackgroundHelper);
     //Create rectangle item
     Enemy * enemy = new Enemy();
 
@@ -318,13 +349,12 @@ void Game::start(){
     //Create a score
     score = new Score();
 
-
     //here we call draw map method where we will draw levels
     std::string name("level1.txt");
     currentFrame = 12;
     readMap(name);
 
-    soundButton = new Button(QString("soundOn"), 50, 50);
+    soundButton = new Button(soundIconIndicator ? QString("soundOn") : QString("soundOff"), 50, 50);
     int soundButtonXPos = this->width() - 100;
     int soundButtonYPos = 0 + 20;
     soundButton->setPos(soundButtonXPos, soundButtonYPos);
@@ -388,7 +418,6 @@ void Game::pause(){
     disconnect(game->player->timerMove, SIGNAL(timeout()), this->player, SLOT(move()));
     disconnect(game->player->timerChangeImagePlayer, SIGNAL(timeout()), this->player, SLOT(changeImage()));
     disconnect(game->player->m_enemy->timerEnemyMove, SIGNAL(timeout()), this->player->m_enemy, SLOT(move()));
-    disconnect(game->player->m_enemy->timerChangeImageEnemy, SIGNAL(timeout()), this->player->m_enemy, SLOT(changeImage()));
     pauseButton->setEnabled(false);
     soundButton->setEnabled(false);
     displayPausePanel();

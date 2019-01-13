@@ -93,6 +93,11 @@ void Player::changeImage()
 
 void Player::advance()
 {
+    if(qAbs(game->horizontalScrollBar()->value() - 81*125) <= 2)
+    {
+        qDebug() << game->horizontalScrollBar()->value();
+        game->setBackgroundBrush(QBrush(QImage(":/images/background2.png").scaled(1280, 700)));
+    }
 
     if(!crashesIntoBlock(game->blocks) &&
             qFabs((game->horizontalScrollBar()->value()*1.0 + game->width()/2.0) - (x() + boundingRect().width()/2)) > 1)

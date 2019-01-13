@@ -12,6 +12,7 @@
         <file>gameoverText.png</file>
         <file>metalTexture.png</file>
         <file>logo.png</file>
+        <file>background2.png</file>
     </qresource>
     <qresource prefix="/images/player/run">
         <file>71.png</file>
@@ -51,6 +52,7 @@
     </qresource>
     <qresource prefix="/tiles">
         <file>tile.png</file>
+        <file>tile2.png</file>
     </qresource>
     <qresource prefix="/maps">
         <file>level1.txt</file>

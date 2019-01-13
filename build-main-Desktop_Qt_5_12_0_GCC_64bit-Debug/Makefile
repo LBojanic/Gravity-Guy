@@ -753,6 +753,7 @@ compiler_rcc_clean:
 	-$(DEL_FILE) qrc_res.cpp
 qrc_res.cpp: ../main/res.qrc \
 		../../../Qt/5.12.0/gcc_64/bin/rcc \
+		../main/background2.png \
 		../main/pauseText.png \
 		../main/metalTexture.png \
 		../main/background.png \
@@ -820,6 +821,7 @@ qrc_res.cpp: ../main/res.qrc \
 		../main/digital-7.ttf \
 		../main/level1.txt \
 		../main/scoreBar.png \
+		../main/tile2.png \
 		../main/tile.png
 	/home/marija/Qt/5.12.0/gcc_64/bin/rcc -name res ../main/res.qrc -o qrc_res.cpp
 
