@@ -15,6 +15,7 @@ private:
     int m_currentImage;
     int m_x;
     int m_y;
+    QList<QPixmap *> animationFrames;
 };
 
 #endif // COIN_H

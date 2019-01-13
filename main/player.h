@@ -15,6 +15,7 @@ public:
     virtual ~Player();
     QGraphicsPixmapItem* collidesWithBlocks(QList<QGraphicsPixmapItem *> blocks);
     QGraphicsPixmapItem* crashesIntoBlock(QList<QGraphicsPixmapItem *> blocks);
+    QGraphicsPixmapItem* collidingItem(QList<QGraphicsPixmapItem *> blocks);
     Enemy* enemy();
     QTimer * timerMove;
     QTimer * timerChangeImagePlayer;

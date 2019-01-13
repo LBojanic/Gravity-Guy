@@ -39,6 +39,7 @@ Player::Player(Enemy * enemy) : m_enemy(enemy)
     timerChangeImagePlayer = new QTimer();
     //setting timer signals and slots
     connect(timerChangeImagePlayer, SIGNAL(timeout()), this, SLOT(changeImage()));
+    connect(timerChangeImagePlayer, SIGNAL(timeout()), m_enemy, SLOT(changeImage()));
     //starting the timer
     timerChangeImagePlayer->start(60);
 }
@@ -105,8 +106,8 @@ void Player::advance()
         QTimer::singleShot(5, m_enemy, SLOT(goToPosition()));
     }
 
-    auto a = crashesIntoBlock(game->blocks);
-    if(a && typeid (*a) == typeid (Coin)){
+    auto a = collidingItem(game->blocks);
+    if(a && typeid(*(a)) == typeid(Coin)){
         if(!game->backgroundMusic->isMuted()){
             QMediaPlayer* coinSound = new QMediaPlayer();
             coinSound->setMedia(QUrl("qrc:/sounds/coin.wav"));
@@ -118,11 +119,15 @@ void Player::advance()
         int i = game->blocks.indexOf(a);
         game->blocks.removeAt(i);
         game->scene->removeItem(a);
+        delete a;
+
     }
 
     if(!m_enemy->crashesIntoBlock(game->blocks))
          m_enemy->setPos(m_enemy->x() + 2, m_enemy->y());
-    if(!crashesIntoBlock(game->blocks)) //move only if player doesn't collide with block on it's path
+
+    auto b = crashesIntoBlock(game->blocks);
+    if(b == nullptr || typeid(*b) == typeid(Coin)) //move only if player doesn't collide with block on it's path
         setPos(x() + 2, y());
     game->horizontalScrollBar()->setValue(game->horizontalScrollBar()->value() + 2);
     if(game->horizontalScrollBar()->value() != game->horizontalScrollBar()->maximum()){
@@ -224,6 +229,15 @@ QGraphicsPixmapItem *Player::crashesIntoBlock(QList<QGraphicsPixmapItem *> block
     }
     mutex->unlock();
     return nullptr;
+}
+
+QGraphicsPixmapItem *Player::collidingItem(QList<QGraphicsPixmapItem *> blocks)
+{
+    for(int i = 0; i < blocks.size(); i++)
+    {
+        if(collidesWithItem(blocks.at(i)))
+            return blocks[i];
+    }
 }
 
 Enemy* Player::enemy()

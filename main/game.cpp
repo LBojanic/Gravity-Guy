@@ -172,7 +172,6 @@ void Game::gameOver(){
     disconnect(game->player->timerMove, SIGNAL(timeout()), this->player, SLOT(move()));
     disconnect(game->player->timerChangeImagePlayer, SIGNAL(timeout()), this->player, SLOT(changeImage()));
     disconnect(game->player->m_enemy->timerEnemyMove, SIGNAL(timeout()), this->player->m_enemy, SLOT(move()));
-    disconnect(game->player->m_enemy->timerChangeImageEnemy, SIGNAL(timeout()), this->player->m_enemy, SLOT(changeImage()));
 
     //we use drawPanel() function to draw a semi transparent panel which pops up when game over is called
     drawPanel(game->horizontalScrollBar()->value(), 0, game->width(), game->height(), Qt::black, 0.90);
@@ -425,6 +424,5 @@ void Game::resumeGame()
     connect(game->player->timerMove, SIGNAL(timeout()), this->player, SLOT(move()));
     connect(game->player->timerChangeImagePlayer, SIGNAL(timeout()), this->player, SLOT(changeImage()));
     connect(game->player->m_enemy->timerEnemyMove, SIGNAL(timeout()), this->player->m_enemy, SLOT(move()));
-    connect(game->player->m_enemy->timerChangeImageEnemy, SIGNAL(timeout()), this->player->m_enemy, SLOT(changeImage()));
 
 }

@@ -20,12 +20,6 @@ Enemy::Enemy()
     timerEnemyMove->start(5);
 
 
-    //creating timer object for animation
-    timerChangeImageEnemy = new QTimer();
-    //setting timer signals and slots
-    connect(timerChangeImageEnemy, SIGNAL(timeout()), this, SLOT(changeImage()));
-    //starting the timer
-    timerChangeImageEnemy->start(60);
 
 
 }
