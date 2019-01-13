@@ -3,6 +3,7 @@
         <file>gravityGuySoundtrack.mp3</file>
         <file>jump.wav</file>
         <file>GameOver.wav</file>
+        <file>coin.wav</file>
     </qresource>
     <qresource prefix="/images">
         <file>background.png</file>
@@ -75,5 +76,13 @@
     <qresource prefix="/fonts">
         <file>digital-7.ttf</file>
         <file>digital-7-mono.ttf</file>
+    </qresource>
+    <qresource prefix="/images/coins">
+        <file>coin5.png</file>
+        <file>coin4.png</file>
+        <file>coin3.png</file>
+        <file>coin2.png</file>
+        <file>coin1.png</file>
+        <file>coin0.png</file>
     </qresource>
 </RCC>

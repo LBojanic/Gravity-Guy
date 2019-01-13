@@ -11,6 +11,7 @@
 #include "globals.h"
 #include <QtMath>
 #include "block.h"
+#include "coin.h"
 
 Player::Player(Enemy * enemy) : m_enemy(enemy)
 {
@@ -104,6 +105,21 @@ void Player::advance()
         QTimer::singleShot(5, m_enemy, SLOT(goToPosition()));
     }
 
+    auto a = crashesIntoBlock(game->blocks);
+    if(a && typeid (*a) == typeid (Coin)){
+        if(!game->backgroundMusic->isMuted()){
+            QMediaPlayer* coinSound = new QMediaPlayer();
+            coinSound->setMedia(QUrl("qrc:/sounds/coin.wav"));
+            coinSound->play();
+        }
+
+        game->score->setScore(game->score->getScore() + 30);
+
+        int i = game->blocks.indexOf(a);
+        game->blocks.removeAt(i);
+        game->scene->removeItem(a);
+    }
+
     if(!m_enemy->crashesIntoBlock(game->blocks))
          m_enemy->setPos(m_enemy->x() + 2, m_enemy->y());
     if(!crashesIntoBlock(game->blocks)) //move only if player doesn't collide with block on it's path
@@ -114,6 +130,10 @@ void Player::advance()
         game->soundButton->setPos(game->soundButton->x() + 2, game->soundButton->y());
         game->pauseButton->setPos(game->pauseButton->x() + 2, game->pauseButton->y());
     }
+
+    /* if the distance between the enemy and the position where the player has jumped is less than
+    2 then the enemy should also change gravity because the enemy needs to jump on the same
+    position where the player has jumped */
     if(!coordinatesWhereEnemyChanges.isEmpty()){
         if(game->distance(coordinatesWhereEnemyChanges.first().first,
                     coordinatesWhereEnemyChanges.first().second,

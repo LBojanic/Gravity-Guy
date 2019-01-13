@@ -36,7 +36,8 @@ SOURCES += \
     globals.cpp \
     block.cpp \
     button.cpp \
-    player.cpp
+    player.cpp \
+    coin.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -47,7 +48,8 @@ HEADERS += \
     globals.h \
     block.h \
     block.h \
-    button.h
+    button.h \
+    coin.h
 
 FORMS += \
         mainwindow.ui

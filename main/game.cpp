@@ -15,6 +15,7 @@
 #include <limits>
 #include "globals.h"
 #include <button.h>
+#include "coin.h"
 #include "player.h"
 #include <QtMath>
 
@@ -79,6 +80,16 @@ void Game::readMap(std::string & mapName)
             {
                 //make new block and add it to blocks list
                 Block * a = new Block(x, y);
+                blocks.append(a);
+                //set block coordinates
+                a->setPos(x, y);
+                //add item to scene
+                scene->addItem(a);
+            }
+            if(c == '*')
+            {
+                //make new coin and add it to blocks list
+                Coin * a = new Coin(x, y);
                 blocks.append(a);
                 //set block coordinates
                 a->setPos(x, y);
@@ -262,6 +273,17 @@ void Game::drawFrame()
         if(row[currentFrame % mapVector[0].length()] == '#')
         {
             Block * a = new Block(x, y);
+            mutex->lock();
+            blocks.append(a);
+            mutex->unlock();
+            //set block coordinates
+            a->setPos(x, y);
+            //add item to scene
+            scene->addItem(a);
+        }
+        if(row[currentFrame % mapVector[0].length()] == '*')
+        {
+            Coin * a = new Coin(x, y);
             mutex->lock();
             blocks.append(a);
             mutex->unlock();
