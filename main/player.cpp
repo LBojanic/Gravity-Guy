@@ -143,6 +143,14 @@ void Player::advance()
                 coordinatesWhereEnemyChanges.pop_front();
         }
     }
+
+    if(!m_enemy->collidingItems().isEmpty()){
+        auto tmp = m_enemy->collidingItems();
+        for(auto i : tmp){
+            if(typeid (*i) == typeid (Player))
+                game->gameOver();
+        }
+    }
 }
 
 void Player::goToMiddle()
