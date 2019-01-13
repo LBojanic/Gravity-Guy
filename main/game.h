@@ -31,6 +31,7 @@ public:
     Button* restartButton;
     void displayPausePanel();
     QGraphicsRectItem* panel;
+    qreal distance(qreal x1, qreal y1, qreal x2, qreal y2);
 
 public slots:
     void drawFrame();

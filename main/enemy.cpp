@@ -96,16 +96,7 @@ void Enemy::move()
 //this is a slot for a signal that player emmits when space key is pressed
 void Enemy::spaceEvent()
 {
-    //if distance from enemy to location where player changed gravity gets smaller than 3
-    // then we change enemy gravity, otherwise we recursively call slot
-    if(qSqrt((coordinatesWhereEnemyChanges.first().first - x()) * (coordinatesWhereEnemyChanges.first().first - x())
-             + (coordinatesWhereEnemyChanges.first().second - y()) * (coordinatesWhereEnemyChanges.first().second - y()))
-            < 2) {
-            setGravity(!gravity());
-            coordinatesWhereEnemyChanges.pop_front();
-    } else {
-        QTimer::singleShot(2, this, SLOT(spaceEvent()));
-    }
+    setGravity(!gravity());
 }
 
 QGraphicsPixmapItem* Enemy::collidesWithBlocks(QList<QGraphicsPixmapItem *> blocks) {

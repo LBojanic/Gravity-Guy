@@ -114,7 +114,15 @@ void Player::advance()
         game->soundButton->setPos(game->soundButton->x() + 2, game->soundButton->y());
         game->pauseButton->setPos(game->pauseButton->x() + 2, game->pauseButton->y());
     }
-
+    if(!coordinatesWhereEnemyChanges.isEmpty()){
+        if(game->distance(coordinatesWhereEnemyChanges.first().first,
+                    coordinatesWhereEnemyChanges.first().second,
+                    m_enemy->x(),
+                    m_enemy->y()) < 2) {
+                m_enemy->spaceEvent();
+                coordinatesWhereEnemyChanges.pop_front();
+        }
+    }
 }
 
 void Player::goToMiddle()
@@ -138,7 +146,6 @@ void Player::keyPressEvent(QKeyEvent *event)
             jumpSound->play();
         }
         coordinatesWhereEnemyChanges.push_back(QPair<qreal, qreal>(x(), y()));
-        QTimer::singleShot(1, m_enemy, SLOT(spaceEvent()));
     }
 }
 

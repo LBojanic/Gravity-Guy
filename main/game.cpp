@@ -16,6 +16,7 @@
 #include "globals.h"
 #include <button.h>
 #include "player.h"
+#include <QtMath>
 
 Game::Game(QWidget *parent){
     Q_UNUSED(parent);
@@ -214,6 +215,12 @@ void Game::displayPausePanel(){
     returnToMenuButton->setPos(game->horizontalScrollBar()->value()+width()/2+50,height()/2+50);
     scene->addItem(returnToMenuButton);
     connect(returnToMenuButton, SIGNAL(clicked()), this, SLOT(close()));
+}
+
+qreal Game::distance(qreal x1, qreal y1, qreal x2, qreal y2)
+{
+    return qSqrt((x1 - x2) * (x1 - x2)
+           + (y1 - y2) * (y1 - y2));
 }
 
 QGraphicsRectItem* Game::drawPanel(int x, int y, int width, int height, QColor color, double opacity){
