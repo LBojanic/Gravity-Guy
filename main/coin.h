@@ -7,6 +7,7 @@ class Coin : public QObject, public QGraphicsPixmapItem{
     Q_OBJECT
 public:
     Coin(int x, int y);
+    ~Coin();
 
 public slots:
     void changeImage();

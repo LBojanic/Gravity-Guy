@@ -93,10 +93,15 @@ void Player::changeImage()
 
 void Player::advance()
 {
-    if(qAbs(game->horizontalScrollBar()->value() - 81*125) <= 2)
+    if(qAbs(game->horizontalScrollBar()->value() - game->backgroundHelperNum*81*125) <= 2)
     {
         qDebug() << game->horizontalScrollBar()->value();
-        game->setBackgroundBrush(QBrush(QImage(":/images/background2.png").scaled(1280, 700)));
+        game->currentSceneImage = (game->currentSceneImage + 1) % 3;
+        game->backgroundHelperNum ++;
+        game->sceneBackgroundHelper->setPixmap(":/images/background" + QString::number(game->backgroundHelperNum % 3) + ".png");
+        game->sceneBackgroundHelper->setPos(game->backgroundHelperNum * 81 * 125, 0);
+
+        game->setBackgroundBrush(QBrush(QImage(":/images/background" + QString::number(game->currentSceneImage) + ".png").scaled(1280, 700)));
     }
 
     if(!crashesIntoBlock(game->blocks) &&

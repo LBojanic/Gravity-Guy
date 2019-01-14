@@ -28,10 +28,10 @@ Game::Game(QWidget *parent){
     scene = new QGraphicsScene();
     //Setting scene size
     scene->setSceneRect(0, 0, std::numeric_limits<double>::max(), 700);
+    currentSceneImage = 0;
 
 
-
-    setBackgroundBrush(QBrush(QImage(":/images/background.png").scaled(1280, 700)));
+    setBackgroundBrush(QBrush(QImage(":/images/background" + QString::number(currentSceneImage) + ".png")));
     setScene(scene);
     //Setting off horizontal scroll bar
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -92,6 +92,16 @@ void Game::readMap(std::string & mapName)
             {
                 //make new block and add it to blocks list
                 Block * a = new Block(x, y, "tile2");
+                blocks.append(a);
+                //set block coordinates
+                a->setPos(x, y);
+                //add item to scene
+                scene->addItem(a);
+            }
+            if(c == '&')
+            {
+                //make new block and add it to blocks list
+                Block * a = new Block(x, y, "tile0");
                 blocks.append(a);
                 //set block coordinates
                 a->setPos(x, y);
@@ -306,6 +316,18 @@ void Game::drawFrame()
             //add item to scene
             scene->addItem(a);
         }
+        if(row[currentFrame % mapVector[0].length()] == '&')
+        {
+
+            Block * a = new Block(x, y, "tile0");
+            mutex->lock();
+            blocks.append(a);
+            mutex->unlock();
+            //set block coordinates
+            a->setPos(x, y);
+            //add item to scene
+            scene->addItem(a);
+        }
         if(row[currentFrame % mapVector[0].length()] == '*')
         {
             Coin * a = new Coin(x, y);
@@ -332,7 +354,8 @@ void Game::start(){
     scene->clear();
 
     sceneBackgroundHelper = new QGraphicsPixmapItem();
-    sceneBackgroundHelper->setPixmap(QPixmap(":/images/background2.png").scaled(1280, 700));
+    backgroundHelperNum = 1;
+    sceneBackgroundHelper->setPixmap(QPixmap(":/images/background1.png"));
     sceneBackgroundHelper->setPos(81*125, 0);
     scene->addItem(sceneBackgroundHelper);
     //Create rectangle item

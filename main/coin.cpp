@@ -22,6 +22,12 @@ Coin::Coin(int x, int y) : m_x(x), m_y(y)
     timer->start(100);
 }
 
+Coin::~Coin()
+{
+    for(auto i : animationFrames)
+        delete i;
+}
+
 void Coin::changeImage()
 {
     m_currentImage = (m_currentImage + 1) % 6;

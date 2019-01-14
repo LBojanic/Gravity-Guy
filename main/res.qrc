@@ -6,13 +6,14 @@
         <file>coin.wav</file>
     </qresource>
     <qresource prefix="/images">
-        <file>background.png</file>
         <file>pauseText.png</file>
         <file>metalTexture.jpg</file>
         <file>gameoverText.png</file>
         <file>metalTexture.png</file>
         <file>logo.png</file>
         <file>background2.png</file>
+        <file>background1.png</file>
+        <file>background0.png</file>
     </qresource>
     <qresource prefix="/images/player/run">
         <file>71.png</file>
@@ -53,6 +54,7 @@
     <qresource prefix="/tiles">
         <file>tile.png</file>
         <file>tile2.png</file>
+        <file>tile0.png</file>
     </qresource>
     <qresource prefix="/maps">
         <file>level1.txt</file>

@@ -33,6 +33,8 @@ public:
     QGraphicsRectItem* panel;
     qreal distance(qreal x1, qreal y1, qreal x2, qreal y2);
     QGraphicsPixmapItem * sceneBackgroundHelper;
+    int currentSceneImage;
+    int backgroundHelperNum;
 public slots:
     void drawFrame();
     //start() needs to be a public slot because when the 'play' button is clicked
