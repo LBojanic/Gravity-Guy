@@ -36,6 +36,9 @@ public:
     QGraphicsPixmapItem * sceneBackgroundHelper;
     int currentSceneImage;
     int backgroundHelperNum;
+    QMediaPlayer* coinSound;
+    QVector<QBrush *> gameBackgrounds;
+
 public slots:
     void drawFrame();
     //start() needs to be a public slot because when the 'play' button is clicked

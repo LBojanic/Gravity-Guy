@@ -6,6 +6,8 @@
 Coin::Coin(int x, int y) : m_x(x), m_y(y)
 {
     for(int i = 0; i < 6; i++) {
+        //putting pixmap pointers to array so that we only use constructors 6 times instead of calling it every time in
+        //timer slot
         QPixmap * tmp = new QPixmap(":/images/coins/coin" + QString::number(i) + ".png");
         animationFrames.push_back(tmp);
     }

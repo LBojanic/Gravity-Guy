@@ -40,6 +40,7 @@ Score::~Score()
 }
 
 void Score::increase() {
+    //we only increase score if a player isn't crashing into blocks
     if(!game->player->crashesIntoBlock(game->blocks))
         m_score ++ ;
     //Redrawing the score text , QString converts number to string

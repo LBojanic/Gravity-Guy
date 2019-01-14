@@ -64,6 +64,7 @@ Game::~Game()
     delete timerForMap;
     delete timerScore;
     delete timerPlayerMove;
+    delete coinSound;
 }
 
 void Game::readMap(std::string & mapName)
@@ -143,7 +144,7 @@ void Game::readMap(std::string & mapName)
         y = 0;
     }
 
-
+    //this is a timer for drawing new blocks
     timerForMap = new QTimer();
     connect(timerForMap, SIGNAL(timeout()), this, SLOT(drawFrame()));
     timerForMap->start(300);
@@ -253,6 +254,8 @@ void Game::displayPausePanel(){
     QGraphicsPixmapItem* pauseText = new QGraphicsPixmapItem();
     pauseText->setPixmap(QPixmap(":images/pauseText.png").scaled(0.8*818, 0.8*164));
     pauseText->setPos(game->horizontalScrollBar()->value()+this->width()/2-pauseText->boundingRect().width()/2, 220);
+    //setting parent item so that we need to keep a pointer only to it's parent
+    // and if we want to delete whole panel with all items we only need to delete parent
     pauseText->setParentItem(panel);
     scene->addItem(pauseText);
 
@@ -272,6 +275,7 @@ void Game::displayPausePanel(){
 
 qreal Game::distance(qreal x1, qreal y1, qreal x2, qreal y2)
 {
+    //Euclidean distance sqrt((x1-x2)^2 + (y1-y2)^2)
     return qSqrt((x1 - x2) * (x1 - x2)
            + (y1 - y2) * (y1 - y2));
 }
@@ -300,8 +304,10 @@ QGraphicsRectItem* Game::drawPanel(int x, int y, int width, int height, QColor c
 
 void Game::drawFrame()
 {
+    //locking mutex for accessing blocks
     mutex->lock();
     if(!blocks.isEmpty()) {
+        //removing blocks that have passed our view
         auto blockToBeRemoved = blocks.first();
         blocks.removeFirst();
         scene->removeItem(blockToBeRemoved);
@@ -312,6 +318,7 @@ void Game::drawFrame()
     int x = currentFrame * 125;
     int y = 0;
     for(auto row : mapVector) {
+        //here we use modulus because we want our map to play infinitely, redrawing from beginning when we come to the end
         if(row[currentFrame % mapVector[0].length()] == '#')
         {
             Block * a = new Block(x, y, "tile");
@@ -323,6 +330,7 @@ void Game::drawFrame()
             //add item to scene
             scene->addItem(a);
         }
+        //here we use modulus because we want our map to play infinitely, redrawing from beginning when we come to the end
         if(row[currentFrame % mapVector[0].length()] == '$')
         {
 
@@ -335,6 +343,8 @@ void Game::drawFrame()
             //add item to scene
             scene->addItem(a);
         }
+
+        //here we use modulus because we want our map to play infinitely, redrawing from beginning when we come to the end
         if(row[currentFrame % mapVector[0].length()] == '&')
         {
 
@@ -347,6 +357,8 @@ void Game::drawFrame()
             //add item to scene
             scene->addItem(a);
         }
+
+        //here we use modulus because we want our map to play infinitely, redrawing from beginning when we come to the end
         if(row[currentFrame % mapVector[0].length()] == '*')
         {
             Coin * a = new Coin(x, y);
@@ -367,12 +379,19 @@ void Game::drawFrame()
 void Game::start(){
     //start() is called after the user presses the 'play' button in the main menu, which starts the game
 
+
+    horizontalScrollBar()->setValue(1);
     gameStartedInd = 1; //when we go back to the main menu we need to reset this indicator
 
     currentSceneImage = 0;
 
-
-    setBackgroundBrush(QBrush(QImage(":/images/background" + QString::number(currentSceneImage) + ".png")));
+    coinSound = new QMediaPlayer();
+    coinSound->setMedia(QUrl("qrc:/sounds/coin.wav"));
+    for(int i = 0 ; i < 3; i++ ) {
+        auto tmp = new QBrush(QPixmap(":/images/background" + QString::number(i) + ".png"));
+        gameBackgrounds.push_back(tmp);
+    }
+    setBackgroundBrush(*gameBackgrounds.first());
     //clear the screen
     scene->clear();
 
@@ -464,6 +483,7 @@ void Game::pause(){
     disconnect(game->player->timerMove, SIGNAL(timeout()), this->player, SLOT(move()));
     disconnect(game->player->timerChangeImagePlayer, SIGNAL(timeout()), this->player, SLOT(changeImage()));
     disconnect(game->player->m_enemy->timerEnemyMove, SIGNAL(timeout()), this->player->m_enemy, SLOT(move()));
+    //when its paused user cannot use buttons on the back screen
     pauseButton->setEnabled(false);
     soundButton->setEnabled(false);
     displayPausePanel();
@@ -471,7 +491,7 @@ void Game::pause(){
 
 void Game::restart()
 {
-
+    //call start method again and set initial values
     horizontalScrollBar()->setValue(1);
     backgroundMusic->play();
     QTimer::singleShot(1, this, SLOT(start()));
@@ -489,10 +509,11 @@ void Game::resumeGame()
     scene->removeItem(panel);
     delete panel;
 
-
+    //set background buttons to be enabled again
     pauseButton->setEnabled(true);
     soundButton->setEnabled(true);
 
+    //connect all timers again
     connect(timerScore,SIGNAL(timeout()),this->score,SLOT(increase()));
     connect(timerPlayerMove,SIGNAL(timeout()),this->player,SLOT(advance()));
     connect(timerForMap, SIGNAL(timeout()), this, SLOT(drawFrame()));

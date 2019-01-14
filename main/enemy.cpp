@@ -144,7 +144,10 @@ QGraphicsPixmapItem *Enemy::crashesIntoBlock(QList<QGraphicsPixmapItem *> blocks
         qreal blockTop = blocks[i]->pos().y(); //block top coordinate
         qreal blockBottom = blocks[i]->pos().y() + blocks[i]->boundingRect().height();//block bottom coordinate
         qreal blockLeft = blocks[i]->pos().x();// block left coordinate
-
+        //if player's right edge and block's left edge differ by at most 2px
+        // and players upper edge is between blocks upper and lower
+        // or players bottom edge is between blocks upper and lower
+        // then he crashes into the blocks
         if(qFabs(playerRight - blockLeft) <= 2 && ((playerTop <= blockBottom && playerTop >= blockTop) || (playerBottom >= blockTop && playerBottom <= blockBottom))) {
             mutex->unlock();
             return blocks[i];
