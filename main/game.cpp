@@ -29,7 +29,7 @@ Game::Game(QWidget *parent){
     //Setting scene size
     scene->setSceneRect(0, 0, std::numeric_limits<double>::max(), 700);
     currentSceneImage = 0;
-
+    setWindowTitle("Gravity Guy");
 
     setBackgroundBrush(QBrush(QImage(":/images/background" + QString::number(currentSceneImage) + ".png")));
     setScene(scene);
