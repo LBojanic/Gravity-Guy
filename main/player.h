@@ -12,7 +12,7 @@ public:
     Player(Enemy * enemy);
     void setGravity(int value);
     int gravity();
-    virtual ~Player();
+    ~Player();
     QGraphicsPixmapItem* collidesWithBlocks(QList<QGraphicsPixmapItem *> blocks);
     QGraphicsPixmapItem* crashesIntoBlock(QList<QGraphicsPixmapItem *> blocks);
     QGraphicsPixmapItem* collidingItem(QList<QGraphicsPixmapItem *> blocks);
@@ -23,6 +23,7 @@ public:
     void focusOutEvent(QFocusEvent* event = nullptr);
     void focusInEvent(QFocusEvent* event = nullptr);
     QMediaPlayer * getJumpSound();
+    QVector<QPixmap *> playerPictures;
 
 public slots:
     void move();

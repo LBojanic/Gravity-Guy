@@ -8,11 +8,12 @@ public:
     Enemy();
     void setGravity(int value);
     int gravity();
-    virtual ~Enemy();
+    ~Enemy();
     QGraphicsPixmapItem* collidesWithBlocks(QList<QGraphicsPixmapItem *> blocks);
     QGraphicsPixmapItem* crashesIntoBlock(QList<QGraphicsPixmapItem *> blocks);
     QTimer * timerEnemyMove;
-    QTimer * timerChangeImageEnemy;
+
+    QVector<QPixmap *> enemyPictures;
 
 public slots:
     void move();

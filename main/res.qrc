@@ -7,7 +7,6 @@
     </qresource>
     <qresource prefix="/images">
         <file>pauseText.png</file>
-        <file>metalTexture.jpg</file>
         <file>gameoverText.png</file>
         <file>metalTexture.png</file>
         <file>logo.png</file>

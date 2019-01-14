@@ -47,6 +47,25 @@ Game::Game(QWidget *parent){
     backgroundMusic->play();
 }
 
+Game::~Game()
+{
+    delete player;
+    delete score;
+    for(auto i: blocks)
+        delete i;
+    delete backgroundMusic;
+    delete soundButton;
+    delete pauseButton;
+    delete resumeButton;
+    delete returnToMenuButton;
+    delete restartButton;
+    delete panel;
+    delete sceneBackgroundHelper;
+    delete timerForMap;
+    delete timerScore;
+    delete timerPlayerMove;
+}
+
 void Game::readMap(std::string & mapName)
 {
     Q_UNUSED(mapName);
@@ -127,7 +146,7 @@ void Game::readMap(std::string & mapName)
 
     timerForMap = new QTimer();
     connect(timerForMap, SIGNAL(timeout()), this, SLOT(drawFrame()));
-    timerForMap->start(400);
+    timerForMap->start(300);
 }
 
 void Game::displayMainMenu(){
@@ -350,6 +369,10 @@ void Game::start(){
 
     gameStartedInd = 1; //when we go back to the main menu we need to reset this indicator
 
+    currentSceneImage = 0;
+
+
+    setBackgroundBrush(QBrush(QImage(":/images/background" + QString::number(currentSceneImage) + ".png")));
     //clear the screen
     scene->clear();
 

@@ -14,6 +14,7 @@ class Game: public QGraphicsView{
     Q_OBJECT
 public:
     Game(QWidget * parent = 0);
+    ~Game();
     void readMap(std::string & mapName);
     QGraphicsScene * scene;
     Player * player;

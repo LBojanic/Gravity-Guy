@@ -10,7 +10,15 @@ Enemy::Enemy()
     enemyCurrentImage = 0;
     //setting initial gravity
     setGravity(1);
-    setPixmap(QPixmap(":/images/player/run/enemy" + QString::number(enemyCurrentImage) + QString::number(gravity()) + ".png").scaled(125, 125));
+    for(int i = 0; i < 8; i++) {
+        auto tmp = new QPixmap(":/images/player/run/enemy" + QString::number(i) + QString::number(!gravity()) + ".png");
+        enemyPictures.push_back(tmp);
+    }
+    for(int i = 0; i < 8; i++) {
+        auto tmp = new QPixmap(":/images/player/run/enemy" + QString::number(i) + QString::number(gravity()) + ".png");
+        enemyPictures.push_back(tmp);
+    }
+    setPixmap(*enemyPictures.first());
 
     //creating timer for movement
     timerEnemyMove = new QTimer(this);
@@ -36,7 +44,9 @@ int Enemy::gravity()
 //Enemy destructor
 Enemy::~Enemy()
 {
-
+    for(auto i : enemyPictures)
+        delete i;
+    delete timerEnemyMove;
 }
 
 void Enemy::changeImage()
@@ -44,7 +54,7 @@ void Enemy::changeImage()
     //we go through images in cyclic manner and change them
     enemyCurrentImage = (enemyCurrentImage + 1) % 8;
     //setting new image
-    setPixmap(QPixmap(":/images/player/run/enemy" + QString::number(enemyCurrentImage) + QString::number(gravity()) + ".png").scaled(125, 125));
+    setPixmap(*enemyPictures.at(enemyCurrentImage + gravity()*8));
 }
 
 void Enemy::goToPosition()

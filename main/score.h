@@ -8,6 +8,7 @@ class Score : public QObject{
     Q_OBJECT
 public:
     Score(QGraphicsItem * parent = nullptr);
+    ~Score();
     int score();
     QGraphicsTextItem * text;
     QGraphicsPixmapItem * background;

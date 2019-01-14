@@ -760,7 +760,6 @@ qrc_res.cpp: ../main/res.qrc \
 		../main/logo.png \
 		../main/gameoverText.png \
 		../main/background0.png \
-		../main/metalTexture.jpg \
 		../main/enemy00.png \
 		../main/enemy01.png \
 		../main/enemy60.png \

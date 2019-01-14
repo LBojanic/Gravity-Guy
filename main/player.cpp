@@ -19,7 +19,15 @@ Player::Player(Enemy * enemy) : m_enemy(enemy)
     playerCurrentImage = 0;
     //setting initial gravity for player
     setGravity(1);
-    setPixmap(QPixmap(":/images/player/run/" + QString::number(playerCurrentImage) + QString::number(gravity()) + ".png").scaled(125, 125));
+    for(int i = 0; i < 8; i++) {
+        auto tmp = new QPixmap(":/images/player/run/" + QString::number(i) + QString::number(!gravity()) + ".png");
+        playerPictures.push_back(tmp);
+    }
+    for(int i = 0; i < 8; i++) {
+        auto tmp = new QPixmap(":/images/player/run/" + QString::number(i) + QString::number(gravity()) + ".png");
+        playerPictures.push_back(tmp);
+    }
+    setPixmap(*playerPictures.first());
 
     //make rect focusable so we can use keyboard events
     setFlag(QGraphicsItem::ItemIsFocusable);
@@ -42,6 +50,7 @@ Player::Player(Enemy * enemy) : m_enemy(enemy)
     connect(timerChangeImagePlayer, SIGNAL(timeout()), m_enemy, SLOT(changeImage()));
     //starting the timer
     timerChangeImagePlayer->start(60);
+
 }
 
 //gravity setter
@@ -58,7 +67,11 @@ int Player::gravity()
 //player destructor
 Player::~Player()
 {
-
+    for(auto i : playerPictures)
+        delete i;
+    delete timerChangeImagePlayer;
+    delete timerMove;
+    delete jumpSound;
 }
 //player movement
 void Player::move()
@@ -88,7 +101,7 @@ void Player::move()
 void Player::changeImage()
 {
     playerCurrentImage = (playerCurrentImage + 1) % 8;
-    setPixmap(QPixmap(":/images/player/run/" + QString::number(playerCurrentImage) + QString::number(gravity()) + ".png").scaled(125, 125));
+    setPixmap(*playerPictures.at(playerCurrentImage + gravity()*8));
 }
 
 void Player::advance()
@@ -101,7 +114,7 @@ void Player::advance()
         game->sceneBackgroundHelper->setPixmap(":/images/background" + QString::number(game->backgroundHelperNum % 3) + ".png");
         game->sceneBackgroundHelper->setPos(game->backgroundHelperNum * 81 * 125, 0);
 
-        game->setBackgroundBrush(QBrush(QImage(":/images/background" + QString::number(game->currentSceneImage) + ".png").scaled(1280, 700)));
+        game->setBackgroundBrush(QBrush(QImage(":/images/background" + QString::number(game->currentSceneImage) + ".png")));
     }
 
     if(!crashesIntoBlock(game->blocks) &&
@@ -248,6 +261,7 @@ QGraphicsPixmapItem *Player::collidingItem(QList<QGraphicsPixmapItem *> blocks)
         if(collidesWithItem(blocks.at(i)))
             return blocks[i];
     }
+    return nullptr;
 }
 
 Enemy* Player::enemy()

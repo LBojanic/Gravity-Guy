@@ -33,6 +33,12 @@ Score::Score(QGraphicsItem *parent){
     game->scene->addItem(text);
 }
 
+Score::~Score()
+{
+    delete text;
+    delete background;
+}
+
 void Score::increase() {
     if(!game->player->crashesIntoBlock(game->blocks))
         m_score ++ ;
